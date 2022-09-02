@@ -19,6 +19,7 @@
 # :vs, :sp
 # `=` : 자동정렬
 # Shift + v + gg or G
+# Ctrl + v, Shift + i(여러 라인 동시 입력)
 
 ```
 :20vs # 20칸 짜리 수평 분할
@@ -71,41 +72,7 @@ qb : 북마크된 디렉터리 리스팅
 gb : 북마크 디렉터리로 이동 (4번으로 이동하고 싶다면 4gb)
 ```
 
-https://dev-in-seoul.tistory.com/m/16
 
-```vim
-this is multiple line
-this is multiple line
-thiis is multiple lne
-this is multiple line
-this is 
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-this is multiple line
-
-```
 # {Command} + {Object}
  - command : d(cut), y(yank), c(change)
  - object
@@ -122,3 +89,9 @@ f or F(
 
 # c$ == C, cc (chagne line)
 # "(a-z){command} : Regist 등록
+
+
+
+
+
+https://dev-in-seoul.tistory.com/m/16
