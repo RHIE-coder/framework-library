@@ -64,11 +64,32 @@ gpgkey=https://www.mongodb.org/static/pgp/server-6.0.asc
 sudo yum install -y mongodb-org
 ```
 
-3. run
+### - Check Running
 
-```
+1. Start MongoDB
+
+```sh
 sudo systemctl start mongod
 ```
+
+2. Verify taht MongoDB has started successfully
+
+```sh
+sudo systemctl status mongod
+```
+
+3. Stop MongoDB
+
+```sh
+sudo systemctl stop mongod
+```
+
+4. Restart MongoDB
+
+```sh
+sudo systemctl restart mongod
+```
+
 
 <br><br><br>
 

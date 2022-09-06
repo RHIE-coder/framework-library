@@ -1,0 +1,9 @@
+POST http://127.0.0.1:22000
+Content-Type: application/json
+
+{
+    "jsonrpc":"2.0",
+    "method":"eth_accounts",
+    "params":[],
+    "id":64
+}
