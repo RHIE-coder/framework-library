@@ -85,7 +85,7 @@ raft.cluster
 7. verify rpc connection
 
 ```http
-POST http://127.0.0.1:22000
+POST http://10.0.2.15:22000
 Content-Type: application/json
 
 {
@@ -94,4 +94,8 @@ Content-Type: application/json
     "params":[],
     "id":64
 }
+```
+
+```sh
+curl -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_accounts","params":[],"id":1}'  -X POST http://10.0.2.15:22000 
 ```

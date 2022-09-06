@@ -1,32 +1,8 @@
 =============== Sep 6, 2022 (KST) ===============
-15:33:48.592076 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
-15:33:48.605358 db@open opening
-15:33:48.605734 version@stat F·[] S·0B[] Sc·[]
-15:33:48.607971 db@janitor F·2 G·0
-15:33:48.607981 db@open done T·2.534612ms
-16:34:24.476960 db@close closing
-16:34:24.477041 db@close done T·79.987µs
-=============== Sep 6, 2022 (KST) ===============
-16:36:18.265475 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
-16:36:18.265556 version@stat F·[] S·0B[] Sc·[]
-16:36:18.265565 db@open opening
-16:36:18.265587 journal@recovery F·1
-16:36:18.266170 journal@recovery recovering @1
-16:36:18.268726 memdb@flush created L0@2 N·3 S·143B "applied,v3":"applied,v1"
-16:36:18.269316 version@stat F·[1] S·143B[143B] Sc·[0.25]
-16:36:18.278174 db@janitor F·3 G·0
-16:36:18.278189 db@open done T·12.619333ms
-16:40:51.516090 db@close closing
-16:40:51.516202 db@close done T·110.817µs
-=============== Sep 6, 2022 (KST) ===============
-16:40:53.251819 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
-16:40:53.251891 version@stat F·[1] S·143B[143B] Sc·[0.25]
-16:40:53.251905 db@open opening
-16:40:53.251930 journal@recovery F·1
-16:40:53.252418 journal@recovery recovering @3
-16:40:53.254783 memdb@flush created L0@5 N·1 S·128B "applied,v5":"applied,v5"
-16:40:53.255278 version@stat F·[2] S·271B[271B] Sc·[0.50]
-16:40:53.264800 db@janitor F·4 G·0
-16:40:53.264817 db@open done T·12.907476ms
-16:57:03.345379 db@close closing
-16:57:03.345739 db@close done T·359.374µs
+22:59:27.707577 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+22:59:27.742222 db@open opening
+22:59:27.743334 version@stat F·[] S·0B[] Sc·[]
+22:59:27.751199 db@janitor F·2 G·0
+22:59:27.751247 db@open done T·8.982476ms
+23:28:04.662762 db@close closing
+23:28:04.669762 db@close done T·6.99327ms

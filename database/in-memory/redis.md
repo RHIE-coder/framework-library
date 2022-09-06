@@ -41,6 +41,23 @@ sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 sudo yum-config-manager --enable remi
 sudo yum install redis
 ```
+<br><br><br>
+
+### - Use `tar.gz`
+
+```sh
+wget http://download.redis.io/releases/redis-7.0.4.tar.gz
+tar -xzf redis-7.0.4.tar.gz
+cd redis-7.0.4
+make
+```
+
+ - run the redis
+
+```sh
+./redis-7.0.4/src/redis-server ./redis-7.0.4/redis.conf
+./redis-7.0.4/src/redis-cli -h 10.0.2.15 -p 6379
+```
 
 
 <hr><br><br><br><br>

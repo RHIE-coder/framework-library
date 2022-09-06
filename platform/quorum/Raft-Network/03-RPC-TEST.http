@@ -1,4 +1,4 @@
-POST http://127.0.0.1:22000
+POST http://10.0.2.15:22000
 Content-Type: application/json
 
 {

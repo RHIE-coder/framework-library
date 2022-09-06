@@ -11,6 +11,14 @@ Document 기반 NoSQL 서버
 ## # Installation
 ###  - [Ubuntu 18.04 Installation](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-debian/)
 
+#### 설치 전 잠깐!
+
+```
+ - `/proc/cpuinfo`에서 `avx` 및 `avx2`가 `grep`되어야 함.
+ - 만일 없다면 CPU가 version 5를 지원하지 않음 -> 4.4.16 버전을 받자
+ - https://docs.mongodb.com/v4.4/tutorial/install-mongodb-on-ubuntu/
+```
+
 1. Import the public key used by the package management system.
 
 ```sh
@@ -72,7 +80,7 @@ sudo yum install -y mongodb-org
 sudo systemctl start mongod
 ```
 
-2. Verify taht MongoDB has started successfully
+2. Verify that MongoDB has started successfully
 
 ```sh
 sudo systemctl status mongod
@@ -90,6 +98,27 @@ sudo systemctl stop mongod
 sudo systemctl restart mongod
 ```
 
+
+<br><br><br>
+
+### - Docker
+
+```sh
+sudo docker pull mongo
+docker run --name mongodb-container -v ~/mongodata:/data/db -d -p 27017:27017 mongo:4.4.16
+
+# 확인
+docker ps -a
+
+# 컨테이너 중지
+docker stop mongodb-container
+
+# 컨테이너 시작
+docker start mongodb-container
+
+# 컨테이너 재시작
+docker restart mongodb-container
+```
 
 <br><br><br>
 

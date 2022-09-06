@@ -1,32 +1,8 @@
 =============== Sep 6, 2022 (KST) ===============
-15:33:48.376289 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
-15:33:48.394816 db@open opening
-15:33:48.397011 version@stat F·[] S·0B[] Sc·[]
-15:33:48.399667 db@janitor F·2 G·0
-15:33:48.399695 db@open done T·4.864623ms
-16:34:24.477111 db@close closing
-16:34:24.477504 db@close done T·391.613µs
-=============== Sep 6, 2022 (KST) ===============
-16:36:18.153231 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
-16:36:18.153301 version@stat F·[] S·0B[] Sc·[]
-16:36:18.153310 db@open opening
-16:36:18.153335 journal@recovery F·1
-16:36:18.155010 journal@recovery recovering @1
-16:36:18.218318 memdb@flush created L0@2 N·30163 S·2MiB "\x00\x00\xae..\x82\x88\x11,v9389":"\xff\xfc\x94..\xa5\x05\xa1,v9518"
-16:36:18.220417 version@stat F·[1] S·2MiB[2MiB] Sc·[0.25]
-16:36:18.230582 db@janitor F·3 G·0
-16:36:18.230594 db@open done T·77.279294ms
-16:40:51.516292 db@close closing
-16:40:51.516518 db@close done T·224.927µs
-=============== Sep 6, 2022 (KST) ===============
-16:40:53.197737 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
-16:40:53.197914 version@stat F·[1] S·2MiB[2MiB] Sc·[0.25]
-16:40:53.197930 db@open opening
-16:40:53.197962 journal@recovery F·1
-16:40:53.199767 journal@recovery recovering @3
-16:40:53.210854 memdb@flush created L0@5 N·4 S·701B "Sna..tor,v30167":"unc..own,v30166"
-16:40:53.213319 version@stat F·[2] S·2MiB[2MiB] Sc·[0.50]
-16:40:53.222287 db@janitor F·4 G·0
-16:40:53.222330 db@open done T·24.371602ms
-16:57:03.345859 db@close closing
-16:57:03.345932 db@close done T·72.219µs
+22:59:27.015064 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+22:59:27.032815 db@open opening
+22:59:27.040134 version@stat F·[] S·0B[] Sc·[]
+22:59:27.049620 db@janitor F·2 G·0
+22:59:27.049668 db@open done T·16.815924ms
+23:28:04.670359 db@close closing
+23:28:04.675289 db@close done T·4.924417ms

@@ -16,7 +16,7 @@ cp $VALIDATOR_1_DIR/account* Node-1/data/keystore
 
 # Initialize node 1
 export PATH=$PATH:$PWD/../bin/
-geth --datadir data init Node-0/data/genesis.json
+geth --datadir Node-1/data init Node-1/data/genesis.json
 
 # Inject shell-script files
 cp $PWD/../bash/start-node-0.sh Node-0/
