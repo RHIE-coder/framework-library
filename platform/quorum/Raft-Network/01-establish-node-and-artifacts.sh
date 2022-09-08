@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 1. create directories
 mkdir -p Node-0/data/keystore
 mkdir -p Node-1/data/keystore

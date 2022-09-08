@@ -1,3 +1,5 @@
+#!/bin/bash
+
 GO_QUORUM_DIR=artifacts/goQuorum/
 VALIDATOR_0_DIR=artifacts/validator0/
 VALIDATOR_1_DIR=artifacts/validator1/

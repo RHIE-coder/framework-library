@@ -2,7 +2,7 @@ const Redis = require("ioredis");
 
 (async()=>{
     const redis = new Redis({
-        host: "127.0.0.1",
+        host: "192.168.154.1",
         port: 6379,
     });
     
