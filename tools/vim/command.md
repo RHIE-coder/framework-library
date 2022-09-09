@@ -1,54 +1,80 @@
-# `~/.vimrc`
-# h j k l
-# w b e (단어 단위 이동)
-# {number} i {type something} ESC
- - 30 i hello ESC
-# f(앞)||F(뒤) + {word}
-# % ( `(`, `{`, `[` )
-# 0 $ (시작, 끝)
-# *(앞으로 같은 단어), #(뒤로 같은 단어)
-# gg, G, {line number} + G
-# /{find word} + n||N
-# o O
-# r (replace)
-# . (repeat)
-# v
-# :q, :w, :wq
-# u, ctrl+R
-# :!(shell command) terminal, :term 
-# :vs, :sp
-# `=` : 자동정렬
-# Shift + v + gg or G
-# Ctrl + v, Shift + i(여러 라인 동시 입력)
+# VIM 설정
 
-```
-:20vs # 20칸 짜리 수평 분할
-:10sp # 10칸 짜리 수직 분할
 
-Ctrl + w, = # 동일 비율 크기 조절
-Ctrl + w, _ # 현재 창 높이 최대화
-Ctrl + w, | # 현재 창 너비 최대화
+## # 파일명
+`~/.vimrc`
 
-Ctrl + w, {n} + # 현재 창 높이 n칸 증가
-Ctrl + w, {n} - # 현재 창 높이 n칸 감소
+<hr><br><br><br><br><br>
 
-Ctrl + w, {n} > # 현재 창 너비 n칸 증가
-Ctrl + w, {n} < # 현재 창 너비 n칸 감소
+### - Movement
 
-By default, when you create a vertically split window, it will open to the left. To change this default behavior, add the following line to your 'vimrc'.
-$ set splitright
 
-Similarly, if you create a new horizontally split window, it will open on the topmost portion of the Vim workspace. To make a new horizontally split window open on the bottom of current window, add the following line to your 'vimrc'.
-set splitbelow
-```
+![](./assets/vim-movement-commands-image.jpg)
 
-# :edit, :e
-# i a I A
-# H M L
-# ctrl+u, ctrl+d
-# { (문단시작), } (문단끝)
-# `ex모드`의 `:`와 `?`의 차이는 검색 방향임
-# `Netrw`: `:e`, `Vexplore`, `Sexplorer`,  
+| command | description |
+|:---:|:---:|
+| h, j, k, l | 왼쪽(h), 아래쪽(j), 위쪽(k), 오른쪽(l)으로 이동 |
+| 0, $ | 단어 단위 앞으로 이동 |
+| w, e, b | 단어 단위 앞으로 처음(w), 앞으로 뒤(e), 뒤로(b) 이동 |
+| gg, G, `{line number}` + G | 커서를 파일 시작점(gg), 끝점(G), 특정 라인(`{line number}` + G)으로 이동 |
+| % | `( )`, `{ }`, `[ ]` 등으로 블록화된 시작점 및 끝점 포인팅 |
+| {, } | 문단시작점으로( { ), 문단끝점으로( } ) 이동 |
+| `[CTRL]` + u, `[CTRL]` + d | 페이지 단위(1/2)로 위(`[CTRL]` + u), 아래(`[CTRL]` + d)로 이동 |
+| `[CTRL]` + b, `[CTRL]` + f | 페이지 단위로 위(`[CTRL]` + b), 아래(`[CTRL]` + f)로 이동 |
+| H, M, L | 보여지는 페이지 위(H), 가운데(M), 아래(L)로 커서로 이동 |
+| zt, zz, zb | 커서 위치를 위(zt), 가운데(zz), 아래(zb)로 바꾸기 |
+
+<br><br><br>
+
+### - Editing 
+
+| command | description |
+|:---:|:---:|
+| `{number}` i `{type something}` `[ESC]` | 편집 커맨드 `i`를 기준으로 입력된 내용 {number}만큼 반복 |
+| o, O | 아랫줄 라인(o) 혹은 윗줄 라인(O) 편집|
+| r + `{alphabet}`, R | 커서 위치 문자 대체(r), 수정모드(R) |
+| c$ (same with `C`), c0, cc | 현재 커서부터 라인의 끝까지(c$), 처음까지(c0), 전체(cc) 재편집 |
+| ~ | 대소문자 변경 | 
+| `virtual mode` + I | 여러 라인 동시 입력 |
+| i, a, I, A | 커서 블록 앞(i), 뒤(a)부터 편집 혹은 라인 맨앞(I), 맨뒤(A) 편집 |
+| s, S | 단어 삭제(s) 혹은 줄 삭제(S) 후 편집 모드 |
+| <<, >> | 내어쓰기(<<), 들여쓰기(>>) |
+| x, X | 글자 삭제(x), 백스페이스(X) |
+| dd, D | 행 삭제(dd), d$와 같은 삭제(D) | 
+
+<br><br><br>
+
+### - Seaching
+
+| command | description |
+|:---:|:---:|
+| f `or` F + `{alphabet}` | 입력한 알파벳 찾기. f(앞), F(뒤)|
+| *, # | *(앞으로 같은 단어), #(뒤로 같은 단어) |
+| / + `{find target}` + n `or` N | 특정 문자 단어 찾기 후 앞(n) 혹은 뒤(N)로 이동 |
+| :, ? | `ex모드`의 `:`와 `?`의 차이는 검색 방향임 |
+
+<br><br><br>
+
+### - Command
+
+| command | description |
+|:---:|:---:|
+| . | 명령어 반복 |
+| v | virtual mode |
+| :! | shell command |
+| :q, :w | quit(:q), save(:w) |
+| :edit `or` :e + `{filename}` | 파일 열기 |
+| u, `[CTRL]`+R | undo(u), redo(`[CTRL]`+R) |
+| :`{size}`vs + `{filename}`, :`{size}`sp + `{filename}` | vertical split(:vs), horizontal split(:sp) |
+| = | 자동정렬 |
+| " + `(a-z)` + `{command}` | regist 등록 |
+| m, ', :marks | 마크설정(m), 마크이동('), 마크리스트(:marks) |
+| `--Netrw--` | :e, Vexplore, Sexplorer |
+
+
+<br><br><br>
+
+### - Netrw
 
 ```
 :he netrw-v
@@ -72,26 +98,109 @@ qb : 북마크된 디렉터리 리스팅
 gb : 북마크 디렉터리로 이동 (4번으로 이동하고 싶다면 4gb)
 ```
 
+<br><br><br>
 
-# {Command} + {Object}
- - command : d(cut), y(yank), c(change)
- - object
+### - window/tab navigating
+
+#### window
+
 ```
-aw: a word
-at: a tag
-ap: a paragraph
-as: a sentence
-i": 
-t or T(
-f or F(
-/{word}
+Ctrl + w (x2) : 시계방향으로 창 이동
+Ctrl + w (h,j,k,l) : 해당 방향으로 창 이동
+
+Ctrl + w s : 수평 창 생성 
+Ctrl + w v : 수직 창 생성
+Ctrl + w c : 현재 창 닫기
+Ctrl + w o : 현재 창 제외한 나머지 창 닫기
+
+Ctrl + w, = : 동일 비율 크기 조절
+Ctrl + w, _ : 현재 창 높이 최대화
+Ctrl + w, | : 현재 창 너비 최대화
+
+Ctrl + w, {n} + : 현재 창 높이 n칸 증가
+Ctrl + w, {n} - : 현재 창 높이 n칸 감소
+
+Ctrl + w, {n} > : 현재 창 너비 n칸 증가
+Ctrl + w, {n} < : 현재 창 너비 n칸 감소
+
+ - By default, when you create a vertically split window, it will open to the left. To change this default behavior, add the following line to your 'vimrc'.
+        $ set splitright
+
+ - Similarly, if you create a new horizontally split window, it will open on the topmost portion of the Vim workspace. To make a new horizontally split window open on the bottom of current window, add the following line to your 'vimrc'.
+        $ set splitbelow
 ```
 
-# c$ == C, cc (chagne line)
-# "(a-z){command} : Regist 등록
+#### tab
+
+```
+:tabnew {filename} : 새탭열기
+:tabf {filename} : 존재할 때만 열기
+:tabclose : 탭 닫기
+:tabs : 탭 목록 보기
+gt : 탭 앞으로 이동
+gT : 탭 뒤로 이동
+```
+
+<br><br><br>
+
+### - Combination skills
+
+| command | description |
+|:---:|:---:|
+| gg + V + G | 명령어 반복 |
+| dii | 파일 내용 모두 지운 후 편집 모드 |
 
 
+#### 닫은 파일 복구
+ - :ls 해서 열렸던 파일 확인
+ - :b (숫자) -> 해당 파일 다시 열기
+
+#### {Command} + {범위} + {Object}
+
+| list | description |
+|:---:|:---:|
+| command | d(cut), y(yank), c(change) |
+| 범위 | a, i, t, T, f, F | 
+| object | w(word), t(tag), p(paragraph), s(sentence), ", / + `{word}`, ... |
 
 
+<hr><br><br><br><br><br>
+
+ - 연습용
+
+```js
+const mongoose = require('mongoose');
+const fs = require('fs')
+const path = require('path')
+
+function init(app, config) {
+    mongoose.connect(`${config.db_uri}/${config.db_name}`, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
+
+    modellist = loadSchema(mongoose);
+
+    app.set("db_model_list",modellist)
+}
+
+function loadSchema(mongoose){
+    const schemadir = path.join(__dirname, "./schema")
+    const modellist = {}
+    const filelist = fs.readdirSync(schemadir)
+    filelist.forEach(file=>{
+        const filename = path.basename(file,path.extname(file));
+        schema_info = require(`./schema/${filename}`);
+        const schema = mongoose.Schema(schema_info.schema);
+        if(schema_info.method) schema_info.method.forEach(m=>schema.method(m.name, m));
+        if(schema_info.static) schema_info.static.forEach(s=>schema.schema(s.name, s));
+        modellist[schema_info.name] = mongoose.model(schema_info.name, schema)
+    })
+
+    return modellist;
+}
+
+module.exports.init = init;
+```
 
 https://dev-in-seoul.tistory.com/m/16
