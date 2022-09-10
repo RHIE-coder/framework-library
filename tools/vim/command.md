@@ -69,6 +69,10 @@
 | = | 자동정렬 |
 | " + `(a-z)` + `{command}` | regist 등록 |
 | m, ', :marks | 마크설정(m), 마크이동('), 마크리스트(:marks) |
+| `[CTRL]`+z, fg % {number} | suspend vim and return terminal. go back vim |
+| :colorsheme | 기본 theme 경로는 `/usr/share/vim/vim00/colors`, 그외 theme [다운로드](https://www.vim.org/scripts/script_search_results.php?keywords=&script_type=color+scheme&order_by=creation_date&direction=descending&search=search) |
+| :set wrap `or` nowrap | 줄넘김 유무|
+| gf, gx | 해당 위치 text의 파일 열기(gf)와 URL열기(gx) |
 | `--Netrw--` | :e, Vexplore, Sexplorer |
 
 
@@ -148,8 +152,6 @@ gT : 탭 뒤로 이동
 | command | description |
 |:---:|:---:|
 | gg + V + G | 명령어 반복 |
-| dii | 파일 내용 모두 지운 후 편집 모드 |
-
 
 #### 닫은 파일 복구
  - :ls 해서 열렸던 파일 확인
@@ -166,41 +168,8 @@ gT : 탭 뒤로 이동
 
 <hr><br><br><br><br><br>
 
- - 연습용
-
-```js
-const mongoose = require('mongoose');
-const fs = require('fs')
-const path = require('path')
-
-function init(app, config) {
-    mongoose.connect(`${config.db_uri}/${config.db_name}`, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
-
-    modellist = loadSchema(mongoose);
-
-    app.set("db_model_list",modellist)
-}
-
-function loadSchema(mongoose){
-    const schemadir = path.join(__dirname, "./schema")
-    const modellist = {}
-    const filelist = fs.readdirSync(schemadir)
-    filelist.forEach(file=>{
-        const filename = path.basename(file,path.extname(file));
-        schema_info = require(`./schema/${filename}`);
-        const schema = mongoose.Schema(schema_info.schema);
-        if(schema_info.method) schema_info.method.forEach(m=>schema.method(m.name, m));
-        if(schema_info.static) schema_info.static.forEach(s=>schema.schema(s.name, s));
-        modellist[schema_info.name] = mongoose.model(schema_info.name, schema)
-    })
-
-    return modellist;
-}
-
-module.exports.init = init;
-```
-
 https://dev-in-seoul.tistory.com/m/16
+
+https://vim.rtorr.com/
+
+
