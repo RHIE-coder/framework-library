@@ -1,28 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-class HelloWorld extends React.Component {
+class Hello extends React.Component {
+
     render() {
-        return React.createElement(
-            'h1', 
-            this.props, 
-            `hello ${this.props.mainFrame} world`)
+        return (
+            <div /*  
+                이런 식으로 넣을 수 있습니다.
+                아주 신기합니다.
+            */>
+                {/* {}을 포함하여 이렇게 주석을 넣습니다. */}
+                Hello World
+            </div>
+        )
     }
 }
 
-const properties = [
-    {id:"java", mainFrame:"spring", title:"java is good"},
-    {id:"javascript", mainFrame:"node.js", title:"javscript is good"},
-    {id:"python", mainFrame:"fastapi", title:"python is good"},
-]
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-    React.createElement(
-        "div",
-        null,
-        React.createElement(HelloWorld,properties[0]),
-        React.createElement(HelloWorld,properties[1]),
-        React.createElement(HelloWorld,properties[2]),
-    )
+ReactDOM
+.createRoot(
+    document.getElementById("root")
+)
+.render(
+    <Hello />
 )
