@@ -28,10 +28,10 @@
     "txnSizeLimit": 64
   },
   "alloc": {
-    "0x18752889734950d37a48cb717e69d99f8f8eb94a": {
+    "0xac7d946e2cd58a70c17dbba55ab551cb61309b2d": {
       "balance": "1000000000000000000000000000"
     },
-    "0xd2002d50bcb415746df1ab9df277ffd7ee045c1d": {
+    "0xb6e9c2bd16803ef8bb84d4dd7bd8b25e6d843475": {
       "balance": "1000000000000000000000000000"
     }
   }

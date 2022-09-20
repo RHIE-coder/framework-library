@@ -1,4 +1,4 @@
-POST http://10.0.2.15:22000
+POST http://localhost:8545
 Content-Type: application/json
 
 {
@@ -7,3 +7,4 @@ Content-Type: application/json
     "params":[],
     "id":64
 }
+

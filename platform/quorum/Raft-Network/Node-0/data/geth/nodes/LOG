@@ -1,8 +1,30 @@
-=============== Sep 6, 2022 (KST) ===============
-22:59:27.752302 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
-22:59:27.776793 db@open opening
-22:59:27.777582 version@stat F·[] S·0B[] Sc·[]
-22:59:27.784262 db@janitor F·2 G·0
-22:59:27.784298 db@open done T·7.452829ms
-23:28:04.697442 db@close closing
-23:28:04.698933 db@close done T·1.48838ms
+=============== Sep 20, 2022 (KST) ===============
+08:25:40.522454 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+08:25:40.530015 db@open opening
+08:25:40.538336 version@stat F·[] S·0B[] Sc·[]
+08:25:40.544304 db@janitor F·2 G·0
+08:25:40.544373 db@open done T·14.290505ms
+08:26:23.089039 db@close closing
+08:26:23.089067 db@close done T·26.921µs
+=============== Sep 20, 2022 (KST) ===============
+08:28:40.394711 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+08:28:40.394773 version@stat F·[] S·0B[] Sc·[]
+08:28:40.394787 db@open opening
+08:28:40.394815 journal@recovery F·1
+08:28:40.395274 journal@recovery recovering @1
+08:28:40.398228 memdb@flush created L0@2 N·2 S·176B "loc..seq,v2":"version,v1"
+08:28:40.398987 version@stat F·[1] S·176B[176B] Sc·[0.25]
+08:28:40.408457 db@janitor F·3 G·0
+08:28:40.408482 db@open done T·13.691047ms
+08:30:24.340117 db@close closing
+08:30:24.340144 db@close done T·26.47µs
+=============== Sep 20, 2022 (KST) ===============
+08:30:26.608265 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+08:30:26.608357 version@stat F·[1] S·176B[176B] Sc·[0.25]
+08:30:26.608373 db@open opening
+08:30:26.608402 journal@recovery F·1
+08:30:26.608949 journal@recovery recovering @3
+08:30:26.611257 memdb@flush created L0@5 N·1 S·159B "loc..seq,v4":"loc..seq,v4"
+08:30:26.611748 version@stat F·[2] S·335B[335B] Sc·[0.50]
+08:30:26.620991 db@janitor F·4 G·0
+08:30:26.621019 db@open done T·12.640825ms

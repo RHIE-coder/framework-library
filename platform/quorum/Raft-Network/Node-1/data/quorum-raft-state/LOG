@@ -1,8 +1,30 @@
-=============== Sep 6, 2022 (KST) ===============
-23:00:04.387306 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
-23:00:04.410147 db@open opening
-23:00:04.419442 version@stat F·[] S·0B[] Sc·[]
-23:00:04.432382 db@janitor F·2 G·0
-23:00:04.432557 db@open done T·22.376448ms
-23:28:06.117388 db@close closing
-23:28:06.120660 db@close done T·3.265396ms
+=============== Sep 20, 2022 (KST) ===============
+08:25:43.680201 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+08:25:43.690252 db@open opening
+08:25:43.691279 version@stat F·[] S·0B[] Sc·[]
+08:25:43.694684 db@janitor F·2 G·0
+08:25:43.694712 db@open done T·4.420675ms
+08:26:23.358125 db@close closing
+08:26:23.359095 db@close done T·964.8µs
+=============== Sep 20, 2022 (KST) ===============
+08:28:42.792569 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+08:28:42.792778 version@stat F·[] S·0B[] Sc·[]
+08:28:42.792816 db@open opening
+08:28:42.792884 journal@recovery F·1
+08:28:42.793487 journal@recovery recovering @1
+08:28:42.796604 memdb@flush created L0@2 N·3 S·143B "applied,v3":"applied,v1"
+08:28:42.797452 version@stat F·[1] S·143B[143B] Sc·[0.25]
+08:28:42.829893 db@janitor F·3 G·0
+08:28:42.829925 db@open done T·37.091081ms
+08:30:24.589012 db@close closing
+08:30:24.589140 db@close done T·127.114µs
+=============== Sep 20, 2022 (KST) ===============
+08:30:32.322259 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+08:30:32.322372 version@stat F·[1] S·143B[143B] Sc·[0.25]
+08:30:32.322405 db@open opening
+08:30:32.322443 journal@recovery F·1
+08:30:32.323053 journal@recovery recovering @3
+08:30:32.326715 memdb@flush created L0@5 N·1 S·128B "applied,v5":"applied,v5"
+08:30:32.327410 version@stat F·[2] S·271B[271B] Sc·[0.50]
+08:30:32.336631 db@janitor F·4 G·0
+08:30:32.336660 db@open done T·14.240879ms

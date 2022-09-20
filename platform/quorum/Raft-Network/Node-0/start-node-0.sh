@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export ADDRESS=$(grep -o '"address": *"[^"]*"' ./data/keystore/accountKeystore | grep -o '"[^"]*"$' | sed 's/"//g')
 export PRIVATE_CONFIG=ignore
 $PWD/../../bin/geth --datadir data \
