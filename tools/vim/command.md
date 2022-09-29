@@ -151,7 +151,10 @@ gT : 탭 뒤로 이동
 
 | command | description |
 |:---:|:---:|
-| gg + V + G | 명령어 반복 |
+| gg + V + G | 전체 내용 Visual Block |
+| gg + = + G | 전체 정렬 |
+| ??? | 필요한 단어만 선택해서 정렬하기 |
+| ??? | Visual Block된 맨끝줄 커서|
 
 #### 닫은 파일 복구
  - :ls 해서 열렸던 파일 확인
@@ -172,4 +175,4 @@ https://dev-in-seoul.tistory.com/m/16
 
 https://vim.rtorr.com/
 
-
+https://wayhome25.github.io/etc/2017/03/27/vi/
