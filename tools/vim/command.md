@@ -35,16 +35,20 @@
 | r + `{alphabet}`, R | 커서 위치 문자 대체(r), 수정모드(R) |
 | c$ (same with `C`), c0, cc | 현재 커서부터 라인의 끝까지(c$), 처음까지(c0), 전체(cc) 재편집 |
 | ~ | 대소문자 변경 | 
+| `virtual mode` | `v`, `CTRL+v`, `SHIFT+v` |
 | `virtual mode` + I | 여러 라인 동시 입력 |
 | i, a, I, A | 커서 블록 앞(i), 뒤(a)부터 편집 혹은 라인 맨앞(I), 맨뒤(A) 편집 |
 | s, S | 단어 삭제(s) 혹은 줄 삭제(S) 후 편집 모드 |
 | <<, >> | 내어쓰기(<<), 들여쓰기(>>) |
 | x, X | 글자 삭제(x), 백스페이스(X) |
 | dd, D | 행 삭제(dd), d$와 같은 삭제(D) | 
+| zc, zo | 코드 접기 (fold), 접힌 코드 펼치기  |
+| zM, zR  | 코드 모두 접기 (fold), 접힌 코드 모두 펼치기 |
+| zd, zD | fold 지우기, 모든 fold 지우기  |
 
 <br><br><br>
 
-### - Seaching
+### - Searching
 
 | command | description |
 |:---:|:---:|
@@ -52,6 +56,9 @@
 | *, # | *(앞으로 같은 단어), #(뒤로 같은 단어) |
 | / + `{find target}` + n `or` N | 특정 문자 단어 찾기 후 앞(n) 혹은 뒤(N)로 이동 |
 | :, ? | `ex모드`의 `:`와 `?`의 차이는 검색 방향임 |
+| s/old/new/`{option}` | `g`(all), `i`(ignore case), `c`(ask)|
+| CTRL + o | 이전 커서 위치로 돌아가기 | 
+
 
 <br><br><br>
 
@@ -77,6 +84,7 @@
 
 
 <br><br><br>
+
 
 ### - Netrw
 
