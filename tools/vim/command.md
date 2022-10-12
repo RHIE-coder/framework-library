@@ -23,6 +23,7 @@
 | `[CTRL]` + b, `[CTRL]` + f | 페이지 단위로 위(`[CTRL]` + b), 아래(`[CTRL]` + f)로 이동 |
 | H, M, L | 보여지는 페이지 위(H), 가운데(M), 아래(L)로 커서로 이동 |
 | zt, zz, zb | 커서 위치를 위(zt), 가운데(zz), 아래(zb)로 바꾸기 |
+| `[]`, `][` | 컬리 블레이스 이동 |
 
 <br><br><br>
 
@@ -45,6 +46,7 @@
 | zc, zo | 코드 접기 (fold), 접힌 코드 펼치기  |
 | zM, zR  | 코드 모두 접기 (fold), 접힌 코드 모두 펼치기 |
 | zd, zD | fold 지우기, 모든 fold 지우기  |
+| J | 다음 라인을 현재 줄의 끝으로 이어 붙임 | 
 
 <br><br><br>
 
@@ -76,6 +78,7 @@
 | = | 자동정렬 |
 | " + `(a-z)` + `{command}` | regist 등록 |
 | m, ', :marks | 마크설정(m), 마크이동('), 마크리스트(:marks) |
+| q + `(a-z)` + `명령어 조합` + q, 사용: `@(a-z)`| 매크로 등록 |
 | `[CTRL]`+z, fg % {number} | suspend vim and return terminal. go back vim |
 | :colorsheme | 기본 theme 경로는 `/usr/share/vim/vim00/colors`, 그외 theme [다운로드](https://www.vim.org/scripts/script_search_results.php?keywords=&script_type=color+scheme&order_by=creation_date&direction=descending&search=search) |
 | :set wrap `or` nowrap | 줄넘김 유무|
@@ -161,8 +164,11 @@ gT : 탭 뒤로 이동
 |:---:|:---:|
 | gg + V + G | 전체 내용 Visual Block |
 | gg + = + G | 전체 정렬 |
+| :r !명령어 | 명령어 결과를 Write 해줌|
 | ??? | 필요한 단어만 선택해서 정렬하기 |
 | ??? | Visual Block된 맨끝줄 커서|
+
+
 
 #### 닫은 파일 복구
  - :ls 해서 열렸던 파일 확인
@@ -175,7 +181,17 @@ gT : 탭 뒤로 이동
 | command | d(cut), y(yank), c(change) |
 | 범위 | a, i, t, T, f, F | 
 | object | w(word), t(tag), p(paragraph), s(sentence), ", / + `{word}`, ... |
+| command | d(cut), y(yank), c(change) |
 
+
+#### 레지스터
+
+| list | description |
+|:---:|:---:|
+|".| 가장 마지막에 삽입된 문자열을 가지고 있음. 삽입모드에서 CTRL+A나 CTRL+@를 누르면 이 레지스터 사용|
+|"%| 현재 편집중인 파일이름 저장|
+|":| 가장 최근에 실행된 명령줄을 기억하는 레지스터 |
+|"/| 가장 최근에 검색한 데이터 |
 
 <hr><br><br><br><br><br>
 
@@ -184,3 +200,5 @@ https://dev-in-seoul.tistory.com/m/16
 https://vim.rtorr.com/
 
 https://wayhome25.github.io/etc/2017/03/27/vi/
+
+https://github.com/johngrib/simple_vim_guide/blob/master/md/insert_keys.md
