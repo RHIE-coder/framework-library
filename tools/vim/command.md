@@ -193,6 +193,21 @@ gT : 탭 뒤로 이동
 |":| 가장 최근에 실행된 명령줄을 기억하는 레지스터 |
 |"/| 가장 최근에 검색한 데이터 |
 
+
+#### INSERT MODE
+
+| list | description |
+|:---:|:---:|
+|CTRL + h| 앞 글자 삭제 |
+|CTRL + w| 앞 단어 삭제 |
+|CTRL + u| 앞 모두 삭제 |
+|CTRL + m| 개행 |
+|CTRL + t| 오른쪽으로 들여쓰기 |
+|CTRL + d| 왼쪽으로 들여쓰기 | 
+|CTRL + e| 커서 아랫줄 문자 입력 |
+|CTRL + y| 커서 윗줄 문자 입력 |
+|CTRL + r| 레지스터에 저장된 문자 붙여넣기 |
+
 <hr><br><br><br><br><br>
 
 https://dev-in-seoul.tistory.com/m/16

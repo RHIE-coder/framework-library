@@ -7,11 +7,7 @@ function inconsistentRead(filename, callback) {
         callback(cache[filename]);
     }else {
         //비동기 함수
-        fs.readFile(filename, "utf8", (err, data)=>{
-            cache[filename] = data;
-            callback(data); 
-        })
-        
+       setTimeout(callback, 1000) 
     }
 }
 
@@ -25,7 +21,6 @@ function createFileReader(filename) {
         onDataReady: listener => listeners.push(listener)
     };
 }
-
 const reader1 = createFileReader("data.txt");
 reader1.onDataReady(data => {
     console.log(`First call data: ${data}`);
