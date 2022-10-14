@@ -1,4 +1,6 @@
-# [Vue 2 시작하기](https://v2.vuejs.org/v2/guide/#Getting-Started) 
+# Vue 2 시작하기
+
+ - [VUE 2](https://v2.vuejs.org/)
 
 ## [ install ]
 
