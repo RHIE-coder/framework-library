@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app"> {{ message }} </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                message: "Hello Vue.js"
+            },
+            beforeCreate: function() {
+                console.log("beforeCreate");
+                console.log(this.message);
+            },
+            created: function() {
+                console.log("created");
+                console.log(this.message);
+            },
+            mounted: function() {
+                console.log("mounted");
+                this.message = "Hello RHIE";
+            },
+            updated: function() {
+                console.log("update")
+                console.log(this.message);
+            }
+        })
+    </script>
+</body>
+
+</html>
