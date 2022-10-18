@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,33 +8,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello Vue.js</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
 </head>
 
 <body>
-    <div id="app"> {{ message }} </div>
+    <div id="app">
+        <router-view name="header"></router-view>
+        <router-view></router-view> <!-- name이 없을 경우 Default -->
+        <router-view name="footer"></router-view>
+    </div>
     <script>
-        new Vue({
-            el: "#app",
-            data: {
-                message: "Hello Vue.js"
-            },
-            beforeCreate: function() {
-                console.log("beforeCreate");
-                console.log(this.message);
-            },
-            created: function() {
-                console.log("created");
-                console.log(this.message);
-            },
-            mounted: function() {
-                console.log("mounted");
-                this.message = "Hello RHIE";
-            },
-            updated: function() {
-                console.log("update")
-                console.log(this.message);
-            }
-        })
+        const Body = { template : `<div>This is Body</div>` }
+        const Header = { template : `<div>This is Header</div>` }
+        const Footer = { template : `<div>This is Footer</div>` }
+
+        const router = new VueRouter({
+            routes: [
+                {
+                    path: "/",
+                    components: {
+                        default: Body,
+                        header: Header,
+                        footer: Footer,
+                    }
+                }
+            ]
+        });
+
+        const app = new Vue({
+            router
+        }).$mount("#app");
     </script>
 </body>
 

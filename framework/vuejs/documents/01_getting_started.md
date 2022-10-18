@@ -152,6 +152,498 @@ Angular의 Two-way Data Binding과 React의 One-way Data Flow를 모두 결합
 
 </html>
 ```
+
+## [ Component ]
+
+화면을 구성할 수 있는 블록(화면의 특정 영역)
+
+### - Global Component
+
+```js
+Vue.component("component name", {
+    // ...
+})
+```
+
+컴포넌트 이름은 template 속성에서 사용할 HTML Custom tag 이름을 의미함.
+인스턴스 부착후 내용 변환됨
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button>컴포넌트 등록</button>
+        <my-component></my-component>
+    </div>
+    <script>
+        Vue.component("my-component", {
+            template: `<div>전역 컴포넌트가 등록되었습니다<div>`
+        })
+
+        new Vue({
+            el: "#app",
+        })
+    </script>
+</body>
+
+</html>
+```
+
+### - Local Component
+
+```js
+new Vue({
+    component: {
+        "component name": content,
+    }
+})
+```
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button>컴포넌트 등록</button>
+        <my-local-component></my-local-component>
+    </div>
+    <script>
+        const cmp = {
+            template: `<div>지역 컴포넌트입니다.</div>`,
+        };
+
+        new Vue({
+            el: "#app",
+
+            components: {
+                "my-local-component": cmp,
+            }
+        })
+    </script>
+</body>
+
+</html>
+```
+
+### - Vue Component 통신
+
+컴포넌트마다 자체적으로 고유한 유효 범위(scope)를 갖는다. 즉, 각 컴포넌트의 유효 범위가 독립적이다. 직접 다른 컴포넌트의 값을 참조할 수 없다.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <my-cmp1></my-cmp1>
+        <my-cmp2></my-cmp2>
+    </div>
+    <script>
+        const cmp1 = {
+            template: `<div> first component : {{cmp1Data}} </div>`,
+            data: function() { return { cmp1Data : 100 }},
+        }
+
+        const cmp2 = {
+            template: `<div> second component : {{cmp2Data}} </div>`,
+            data : function() { return { cmp2Data : cmp1.data().cmp1Data }},
+        }
+
+        console.log(cmp1.data().cmp1Data)
+
+        new Vue({
+            el: "#app",
+
+            components : {
+                "my-cmp1": cmp1,
+                "my-cmp2": cmp2,
+            }
+        })
+    </script>
+</body>
+
+</html>
+```
+
+#### 상위-하위 컴포넌트 관계
+
+ - 상위 --> 하위 : `props` 전달
+
+
+> #### `props 속성`
+> ```js
+> Vue.component("child-component", {
+>     props:["props 속성 이름"],
+> })
+> ```
+> ```html
+> <child-component v-bind:props 속성이름="상위 컴포넌트 data"></child-component>
+> ```
+>  - 활용
+> ```html
+> <!DOCTYPE html>
+> <html lang="en">
+> 
+> <head>
+>     <meta charset="UTF-8">
+>     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+>     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+>     <title>Hello Vue.js</title>
+>     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+> </head>
+> 
+> <body>
+>     <div id="app">
+>         <child-component v-bind:propsdata="msg"></child-component>
+>     </div>
+>     <script>
+>         // 상위 컴포넌트 Vue Instance(Root Component), 하위 컴포넌트 child-component
+>         new Vue({
+>             el:"#app",
+>             data: function(){
+>                 return {
+>                     msg: "안녕하세요 child component",
+>                 }
+>             },
+>             components: {
+>                 "child-component": {
+>                     props: ["propsdata"],
+>                     template: `<h3> {{ propsdata }} </h3>`,
+>                 }
+>             },
+>         })
+>     </script>
+> </body>
+> 
+> </html>
+> ```
+
+ - 하위 --> 상위 : 이벤트 발생
+
+> #### 이벤트 발생과 수신 형식
+> ```html
+> <!DOCTYPE html>
+> <html lang="en">
+> 
+> <head>
+>     <meta charset="UTF-8">
+>     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+>     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+>     <title>Hello Vue.js</title>
+>     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+> </head>
+> 
+> <body>
+>     <div id="app">
+>         <child-component v-on:show-log="printText"></child-component>
+>     </div>
+>     <script>
+> 
+>         const cmp = {
+>             "child-component": {
+>                 template: `<button v-on:click="showLog">show</button>`,
+>                 methods: {
+>                     showLog(){
+>                         this.$emit("show-log");
+>                     }
+>                 } 
+>             }
+>         }
+> 
+>         new Vue({
+>             el: "#app",
+>             methods: {
+>                 printText() {
+>                     console.log("received an event");
+>                 }
+>             },
+>             components : cmp,
+>         })
+>     </script>
+> </body>
+> 
+> </html>
+> ```
+
+#### 이벤트 버스
+
+어플리케이션 로직을 담는 인스턴스와의 별개로 새로운 인스턴스를 1개 더 생성하고 새 인스턴스를 이용하여 이벤트를 보내고 받는다.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <child-component></child-component>
+    </div>
+    <script>
+        const eventBus = new Vue();
+
+        new Vue({
+            el: "#app",
+            created: function () {
+                eventBus.$on("triggerEventBus", function (value) {
+                    console.log("received event data : " + value)
+                })
+            },
+            components: {
+                "child-component": {
+                    methods: {
+                        showLog() {
+                            eventBus.$emit("triggerEventBus", Math.floor(Math.random()*100));
+                        }
+                    },
+                    template: `<div>하위 컴포넌트 영역입니다.<button v-on:click="showLog">show</button></div>`,
+                },
+            },
+        })
+
+    </script>
+</body>
+
+</html>
+```
+
+## [ Vue Router ]
+
+라우팅 기능을 구현할 수 있도록 지원하는 공식 라이브러리
+
+```html
+<router-link to="URL Value"> // 페이지 이동 태그. 화면에서는 <a>로 표시됨
+<router-view> // 페이지 표시 태그. 변경되는 URL에 따라 해당 컴포넌트를 뿌려주는 영역
+```
+
+ - 활용
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3/dist/vue-router.js"></script>    
+</head>
+
+<body>
+    <div id="app">
+        <p>
+            <router-link to="/main">MAIN COMPONENT</router-link>
+            <router-link to="/login">LOGIN COMPONENT</router-link>
+        </p>
+        <router-view></router-view>
+    </div>
+    <script>
+        const Main = { template : `<div>main</div>`}
+        const Login = { template : `<div>login</div>`}
+
+        const routes = [
+            { path: "/main", component: Main },
+            { path: "/login", component: Login},
+        ];
+
+        const router = new VueRouter({routes})
+
+        const app = new Vue({
+            router,
+        }).$mount("#app");
+    </script>
+</body>
+
+</html>
+```
+
+`$mount()` API는 `el` 속성과 동일하게 인스턴스를 화면에 붙이는 역할을 함.
+
+인스턴스를 생성할 때 `el` 속성을 넣지 않았더라도 생성하고 나서 $mount()를 이용하면 강제로 인스턴스를 화면에 붙일 수 있음
+
+Vue Router의 공식 문서에는 모두 인스턴스 안에 el을 지정하지 않고 라우터만 지정하여 생성한 다음 생성된 인스턴스를 $mount()를 이용해 붙이는 식으로 안내하는 중
+
+해시 값(#)을 없애고 싶다면?
+
+```js
+const router = new VueRouter({
+    mode: "history",
+    routes,
+})
+```
+
+### - Nested Router
+
+최소 2개 이상의 컴포넌트를 화면에 나타낼 수 있음
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <router-link to="/user">USER</router-link>
+        <router-view></router-view>
+    </div>
+    <script>
+        //Componet 내용 정의
+        const User = {
+            template: `
+            <div> 
+                User Component 
+                <p>
+                    <router-link to="/user/posts">posts</router-link>
+                    <router-link to="/user/profile">profile</router-link>
+                </p>
+                <router-view></router-view> <!-- 하위 컴포넌트가 뿌려질 영역 -->
+            </div>
+            `
+        }; //컴포넌트 내용 정의
+
+        const UserPost = { template: `<p>User Post Component</p>` }
+        const UserProfile = { template: `<p>User Profile Component</p>` }
+
+        //네스티드 라우팅 정의
+        const routes = [
+            {
+                path: "/user",
+                component: User,
+                children: [
+                    { path: "posts", component: UserPost },
+                    { path: "profile", component: UserProfile },
+                ]
+            },
+        ]
+
+        //뷰 라우터 정의
+        const router = new VueRouter({
+            // mode: "history",
+            routes,
+        });
+
+        //뷰 인스턴스에 라우터 추가
+        const app = new Vue({
+            router
+        }).$mount("#app");
+
+
+    </script>
+</body>
+
+</html>
+```
+
+### - Named View
+
+네스티드 라우터는 화면을 구성하는 컴포넌트의 수가 적을 때는 유용하지만 한 번에 많은 컴포넌트를 표시하는 데는 한계가 존재.
+
+네임드 뷰는 특정 페이지로 이동했을 때 여러 개의 컴포넌트를 동시에 표시하는 라우팅 방식.
+
+네스티드 라우터는 상위 컴포넌트가 하위 컴포넌트를 포함하는 형식이지만 네임드 뷰는 같은 레벨에서 여러 개의 컴포넌트를 한번에 표시.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <router-view name="header"></router-view>
+        <router-view></router-view> <!-- name이 없을 경우 Default -->
+        <router-view name="footer"></router-view>
+    </div>
+    <script>
+        const Body = { template : `<div>This is Body</div>` }
+        const Header = { template : `<div>This is Header</div>` }
+        const Footer = { template : `<div>This is Footer</div>` }
+
+        const router = new VueRouter({
+            routes: [
+                {
+                    path: "/",
+                    components: {
+                        default: Body,
+                        header: Header,
+                        footer: Footer,
+                    }
+                }
+            ]
+        });
+
+        const app = new Vue({
+            router
+        }).$mount("#app");
+    </script>
+</body>
+
+</html>
+```
+
+## [ HTTP Request ]
+
+ - About `vue-resource`
+
+뷰 리소스는 초기에 코어 팀에서 공식적을 권하는 라이브러리였으나 2016년 말에 에반이 공식적인 지원을 중단하기로 결정하면서 다시 기존에 관리했던 PageKit 팀의 라이브러리로 돌아갔음.(라우팅, 상태 관리와 달리 필수적인 기능이 아니라고 판단)
+
+ - `axios` 추천
+
+
+## [ Vue Template ]
+
+
+
+
 <!-- ### - Build Project
 
 ```
