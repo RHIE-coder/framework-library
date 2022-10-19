@@ -641,14 +641,482 @@ const router = new VueRouter({
 
 ## [ Vue Template ]
 
+HTML, CSS 등의 마크업 속성과 뷰 인스턴스에서 정의한 데이터 및 로직들을 연결하여 사용자가 브라우저에서 볼 수 있는 형태의 HTML로 변환해 주는 속성
 
+라이브러리 내부적으로 template 속성에서 정의한 마크업 + 뷰 데이터를 가상 돔 기반의 render() 함수로 변환. 변환된 render() 함수는 최종적으로 사용자가 볼 수 있게 화면을 그리는 역할.
 
+ - template 속성을 사용하지 않은 경우
 
-<!-- ### - Build Project
+```html
+<div id="app">
+    <h3>{{ message }}</h3>
+</div>
 
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            message: "Hello Vue.js",
+        }
+    })
+</script>
 ```
-npm install vue
-npm i -D @vue/cli-service
-npm i -D @babel/core @vue/cli-plugin-babel 
 
-``` -->
+ - template 속성을 사용한 경우
+
+```html
+<div id="app"></div>
+
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            message: "Hello Vue.js",
+        },
+        template: `<h3>{{ message }}</h3>`,
+    })
+</script>
+```
+
+### - Data Binding
+
+#### `{{ }} - 콧수염 괄호`
+
+뷰 인스턴스의 데이터를 HTML 테그에 연결하는 텍스트 삽입 방식
+
+자바스크립트 표현식도 사용 가능
+
+```html
+<p>{{ message.split('').reverse().join('') }}</p>
+```
+
+ - `v-bind` : 데이터 바인딩. (`v-bind:id`는 `:id`로 간추릴 수 있음, Not Recommended).
+ - `v-once` : 뷰 데이터가 변경되어도 값을 바꾸고 싶지 않을 때 사용.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p v-bind:id="idA">id binding</p>
+        <p v-bind:class="classA">class binding</p>
+        <p v-bind:style="styleA">style binding</p>
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                idA: 10,
+                classA: "container",
+                styleA: "color: blue",
+            }
+        })
+    </script>
+</body>
+
+</html>
+```
+ - 활용
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div> {{ message }} </div>
+        <div> {{ reversedMessage }} </div>
+    </div>
+    <script>
+        new Vue({
+            data: function(){
+                return {
+                    message: "Hello Vue.js",
+                }
+            },
+            computed: { // 데이터 속성을 자동으로 계산해주는 속성
+                reversedMessage: function(){ 
+                    return this.message.split('').reverse().join('');
+                }
+            }
+        }).$mount("#app");
+    </script>
+</body>
+
+</html>
+```
+### - Vue Directive
+
+HTML 태그 안에 v- 접두사를 가지는 모든 속성을 의미
+
+```html
+<a v-if="flag">Vue.js</a> <!-- flag 값이 참이면 보이고 거짓이면 안보임 -->
+```
+
+| name | role |
+|:---:|:---:|
+|`v-if`|지정한 뷰 데이터 값의 참, 거짓 여부에 따라 해당 HTML 태그를 화면에 표시하거나 표하지 않음|
+|`v-for`|지정한 뷰 데이터의 개수만큼 해당 HTML 태그의 반복을 출력|
+|`v-show`| `v-if`와 같지만, 태그를 없애는 것이 아니라 `display:none`으로 바꾸는 것|
+|`v-bind`| HTML 태그의 기본 속성과 뷰 데이터 속성을 연결 |
+|`v-on`| 화면 요소의 이벤트를 감지하여 처리할 때 사용 |
+|`v-model`| form에서 주로 사용되는 속성. 폼에 입력한 값을 뷰 인스턴스의 데이터와 즉시 동기화. 화면에 입력된 값을 저장하여 서버에 보내거나 watch와 같은 고급 속성을 이용하여 추가 로직을 수행할 수 있음. `<input>`, `<select>`, `<textarea>` 태그에만 사용 가능|
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <a v-if="flag">Vue.js</a>
+        <ul>
+            <li v-for="system in systems">{{ system }}</li>
+        </ul>
+        <p v-show="flag">Vue.js showing</p>
+        <h5 v-bind:id="uid">뷰 입문서</h5>
+        <button v-on:click="popupAlert">경고 창 버튼</button>
+    </div>
+    <script>
+        new Vue({
+            data: function() {
+                return {
+                    flag: true,
+                    systems: ["android", "ios", "window"],
+                    uid: 10,
+                }
+            },
+            methods: {
+                popupAlert() {
+                    alert("경고창 표시");
+                    this.flag = !this.flag;
+                }
+            }
+        }).$mount("#app");
+    </script>
+</body>
+
+</html>
+```
+
+#### 이벤트 처리
+
+ - 기본 사용법 
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="clickBtn">클릭</button>
+    </div>
+    <script>
+        new Vue({
+            methods: {
+                clickBtn() {
+                    alert("clicked")
+                }
+            }
+        }).$mount("#app");
+    </script>
+</body>
+
+</html>
+```
+
+ - 인자 넘겨주는 법
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="clickBtn(100)">클릭</button>
+    </div>
+    <script>
+        new Vue({
+            methods: {
+                clickBtn(number) {
+                    console.log(number);
+                }
+            }
+        }).$mount("#app")
+    </script>
+</body>
+
+</html>
+```
+
+ - 이벤트 객체 받는법
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="clickBtn">클릭</button>
+    </div>
+    <script>
+        new Vue({
+            methods: {
+                clickBtn(event) {
+                    console.log(event);
+                }
+            }
+        }).$mount("#app")
+    </script>
+</body>
+
+</html>
+```
+
+ - 인자와 이벤트 둘 다 넘기는 방법
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="clickBtn(100, $event)">클릭</button>
+    </div>
+    <script>
+        new Vue({
+            methods: {
+                clickBtn(num, evt) {
+                    console.log(num, evt);
+                }
+            }
+        }).$mount("#app")
+    </script>
+</body>
+
+</html>
+```
+
+### - 고급 템플릿 기법
+
+#### `computed` 속성
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{ reversedMessage }}</div>
+    </div>
+    <script>
+        new Vue({
+            data: function(){
+                return {
+                    message: "Hello Vue.js",
+                }
+            },
+            computed: {
+                reversedMessage(){
+                    return this.message.split('').reverse().join('');
+                }
+            },
+        }).$mount("#app")
+    </script>
+</body>
+
+</html>
+```
+
+`computed 장점`: data 속성 값의 변화에 따라 자동으로 다시 연산(computed 속성에서 사용하고 있는 data 속성 값이 변경되면 전체 값을 다시 한번 계산) + 캐싱. 동일한 연산을 반복해서 하지 않기 위해 연산의 결과 값을 미리 저장하고 있다가 필요할 때 불러옴.
+
+
+#### `methods` 속성
+
+computed 속성과의 큰 차이점으로 methods 속성은 호출할 때만 해당 로직이 수행되고, computed 속성은 대상 데이터의 값이 변경되면 자동적으로 수행됨.
+
+수동적으로 데이터를 갱신하느냐, 능동적으로 갱신하느냐의 차이
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+       <p>{{ message }}</p> 
+       <button v-on:click="reverseMsg">문자열 역순</button>
+    </div>
+    <script>
+        new Vue({
+            data: function(){
+                return {
+                    message: "Hello Vue.js",
+                }
+            },
+            methods: {
+                reverseMsg() {
+                    this.message = this.message.split('').reverse().join('')
+                    return this.message;
+                }
+            },
+        }).$mount("#app");
+    </script>
+</body>
+
+</html>
+```
+
+methods 속성은 수행할 때마다 연산을 하기 때문에 별도로 캐싱하지 않음
+
+복잡한 연산을 반복 수행해서 화면에 나타내야 하면 computed 속성을 이용하는 것이 methods 속성을 이용하는 것보다 성능 면에서 효율 
+
+#### `watch` 속성
+
+watch 속성은 데이터 변화를 감지하여 자동으로 특정 로직을 수행함. computed 속성과 유사, but computed가 내장 API를 활용한 간단한 연산 정도로 적합한 반면, watch 속성은 데이터 호출과 같이 시간이 상대적으로 많이 소모되는 비동기 처리에 적합.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input v-model="message">
+    </div>
+    <script>
+        new Vue({
+            data: function() {
+                return {
+                    message: "Hello Vue.js",
+                }
+            },
+            watch: {
+                message: function(data){
+                    console.log(`message value: ${data}`);
+                }
+            },
+        }).$mount("#app")
+    </script>
+</body>
+
+</html>
+```
+
+#### watch와 computed의 차이점
+
+computed : 선언형 프로그래밍(?) 계산된 값을 출력하는 용도
+
+watch : 명령형 프로그래밍(?) 어떤 조건이 되었을 때 함수를 실행하는 트리거
+
+
+## [ Single File Components ]
+
+`.vue` 파일로 프로젝트 구조를 구성하는 방식
+
+```vue
+<template>
+    <!-- 화면에 표시할 요소들을 정의하는 영역 -->
+    <!-- HTML, Vue Data Binding... -->
+</tempalte>
+
+<script>
+export default {
+    // 자바스크립트 내용
+    // Vue Component 내용을 정의하는 영역
+    // template, data, methods 등
+}
+</script>
+
+<style>
+    /* CSS 스타일 내용 */
+</style>
+```
