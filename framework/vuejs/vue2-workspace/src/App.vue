@@ -1,18 +1,25 @@
 <template>
     <div id="app">
-        <h1>HELLO WORLD</h1>
-        <h1>{{ message }}</h1>
+        <TodoHeader></TodoHeader>
+        <TodoInput></TodoInput>
+        <TodoList></TodoList>
+        <TodoFooter></TodoFooter>
     </div>
 </template>
 
 <script>
+import TodoHeader from "@/components/TodoHeader.vue"
+import TodoFooter from "@/components/TodoFooter.vue"
+import TodoInput from "@/components/TodoInput.vue"
+import TodoList from "@/components/TodoFooter.vue"
+
 export default {
     name: "Application",
-    data: function(){
-        return {
-            message: "Hello World",
-        }
+    components: {
+        TodoHeader,
+        TodoFooter,
+        TodoInput,
+        TodoList,
     }
 }
 </script>
-
