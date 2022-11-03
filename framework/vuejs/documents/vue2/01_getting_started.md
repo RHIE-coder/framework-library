@@ -1117,6 +1117,7 @@ export default {
 </script>
 
 <style>
+/* <style scoped> Child Component 영향 줄임. 해당 컴포넌트에만 적용하겠음 */
     /* CSS 스타일 내용 */
 </style>
 ```
