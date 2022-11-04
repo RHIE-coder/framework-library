@@ -1,76 +1,58 @@
 <template>
     <div id="app">
-        <!-- 수정됨 -->
-        <TodoHeader></TodoHeader>
-        <TodoInput v-on:dataSync="addTodo"></TodoInput>
-        <TodoList v-bind:propsData="todoItems" @removeItem="removeTodo"></TodoList>
-        <TodoFooter @removeAll="clearAll"></TodoFooter>
+        <Header></Header>
+        <nav>
+            <router-link to="/">Home</router-link> |
+            <router-link to="/video">Video</router-link>
+        </nav>
+        <router-view />
+        <video-player :options="videoOptions" />
     </div>
 </template>
 
 <script>
-import TodoHeader from "@/components/TodoHeader.vue"
-import TodoFooter from "@/components/TodoFooter.vue"
-import TodoInput from "@/components/TodoInput.vue"
-import TodoList from "@/components/TodoList.vue"
+import Header from "@/components/Header.vue"
+import VideoPlayer from "@/components/VideoPlayer.vue"
 
 export default {
     name: "Application",
     components: {
-        TodoHeader,
-        TodoFooter,
-        TodoInput,
-        TodoList,
+        VideoPlayer,
+        Header,
     },
-
-    /* 추가됨 */
     data() {
         return {
-            todoItems: []
-        }
-    },
-
-    created() {
-        if (localStorage.length > 0) {
-            for (let i = 0; i < localStorage.length; i++) {
-                this.todoItems.push(localStorage.key(i));
+            videoOptions: {
+                autoplay: true,
+                loop: true,
+                sources: [
+                    {
+                        src: 'https://cdn.publishinc.kr/orange.mp4',
+                        type: 'video/mp4'
+                    }
+                ]
             }
         }
     },
-
-    methods: {
-        addTodo(todoItem) {
-            localStorage.setItem(todoItem, todoItem);
-            this.todoItems.push(todoItem);
-        },
-        clearAll(){
-            localStorage.clear();
-            this.todoItems = [];
-        },
-        removeTodo(todoItem, index){
-
-        }
-    }
-    /*********/
 }
 </script>
 
 <style>
-    body {
-        text-align: center;
-        background-color: #f6f6f8;
-    }
+body {
+    text-align: center;
+    background-color: #f6f6f8;
+}
 
-    input {
-        border-style: groove;
-        width: 200px;
-    }
+input {
+    border-style: groove;
+    width: 200px;
+}
 
-    button {
-        border-style: groove;
-    }
+button {
+    border-style: groove;
+}
 
-    .shadow {
-        box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.03)
-    }
+.shadow {
+    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.03)
+}
 </style>
