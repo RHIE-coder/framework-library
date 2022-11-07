@@ -1,131 +1,5 @@
 # Vue 2 Project Set Up
 
-## [Create Project]
-
-```bash
-npm i vue vue-router
-npm i -D @vue/cli-service vue-template-compiler
-```
-###### ISSUE: `vue-template-compiler`는 내부적으로 필요할 것 같은데 필수적으로 불러와야 하는지는 모름
-
- - `public/index.html`
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VUE PROJECT COMPOSE</title>
-</head>
-<body>
-   <div id="app"></div> 
-</body>
-</html>
-```
-
- - `src/App.vue`
-
-```vue
-<template>
-    <div id="app">
-        <h1>HELLO WORLD</h1>
-        <h1>{{ message }}</h1>
-    </div>
-</template>
-
-<script>
-export default {
-    name: "Application",
-    data: function(){
-        return {
-            message: "Hello World",
-        }
-    }
-}
-</script>
-```
-
- - `src/main.js`
-
-```js
-import Vue from 'vue'
-import Application from './App.vue'
-
-Vue.config.productionTip = false
-
-new Vue({
-  render: h => h(Application),
-}).$mount('#app')
-```
-
- - `babel.config.js`
-
-```js
-module.exports = {
-  presets: [
-    '@vue/cli-plugin-babel/preset'
-  ]
-}
-```
-
- - `jsconfig.json`
-
-```json
-{
-  "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
-    "baseUrl": "./",
-    "moduleResolution": "node",
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
-  }
-}
-```
-
- - `package.json` 내용 추가
-
-```json
-...
-...
-...
-  "scripts": {
-    "serve": "vue-cli-service serve --port 5501",
-    "build": "vue-cli-service build"
-  },
-...
-...
-...
-```
-
- - `vue.config.js`
-
-```js
-const { defineConfig } = require('@vue/cli-service')
-module.exports = defineConfig({
-  transpileDependencies: true
-})
-```
-
-### - running test
-
-```
-npm run serve
-```
-
-<br><br><br><br><br>
-
 ## [Project Step 01]
 
 ```sh
@@ -742,6 +616,8 @@ Application 상태를 보유하고 있는 저장소 : `store`
  2. 저장소의 상태 직접 변경 불가. 명시적인 commit만이 유일한 변이 방법이며 모든 상태에 대한 추적 가능한 기록이 남을 수 있음
 
 #### *state*
+
+
 
 #### *getters*
 
