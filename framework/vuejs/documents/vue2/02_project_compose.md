@@ -617,20 +617,13 @@ Application 상태를 보유하고 있는 저장소 : `store`
 
 #### *state*
 
-
-
 #### *getters*
-
 
 #### *mutations*
 
-
 #### *actions*
 
-
 #### *modules*
-
-
 
 
 ### - Vue Reactivity

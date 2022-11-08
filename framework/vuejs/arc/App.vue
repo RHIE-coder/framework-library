@@ -35,7 +35,7 @@ export default {
                 loop: true,
                 sources: [
                     {
-                        src: 'https://cdn.publishinc.kr/orange.mp4',
+                        src: 'aaa',
                         type: 'video/mp4'
                     }
                 ]
