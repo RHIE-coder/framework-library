@@ -1123,6 +1123,11 @@ export default {
 ```
 
 ## [Create Project Sample]
+```bash
+npm i -D @vue/cli
+npx vue create [project-name]
+```
+or
 
 ```bash
 npm i vue@2.X.X vue-router@3.X.X vuex@3.X.X
