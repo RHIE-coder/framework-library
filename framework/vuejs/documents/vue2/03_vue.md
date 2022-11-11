@@ -136,7 +136,41 @@ export default {
 
 Mixins are a flexible way to distribute reusable functionalities for Vue components. A mixin object can contain any component options. When a component uses a mixin, all options in the mixin will be “mixed” into the component’s own options.
 
+Apply a mixin globally, which affects every Vue instance created afterwards. This can be used by plugin authors to inject custom behavior into components. Not recommended in application code.
 
+```js
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+
+Vue.config.productionTip = false
+
+const myMixin = {
+  data() {
+    return {
+      a: 10,
+      b: 20,
+    }
+  },
+  created() {
+    this.hello()
+  },
+  methods: {
+    hello(){
+      console.log("hello from mixin!");
+    },
+  },
+}
+
+Vue.mixin(myMixin);
+
+new Vue({
+  router,
+  store,
+  render: h => h(App)
+}).$mount('#aaa')
+```
 
 #### `Vue.compile()`
 
@@ -197,6 +231,228 @@ After the instance is created, the original data object can be accessed as vm.$d
  - `Vue.filter`
  - `Vue.component`
 
+### - Options/Composition
+
+#### parent
+#### mixins
+#### extends
+#### provide-inject
+
+Note: the provide and inject bindings are NOT reactive. This is intentional. However, if you pass down an observed object, properties on that object do remain reactive.
+
+ - parent
+```js
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+
+Vue.config.productionTip = false
+
+
+new Vue({
+  
+  provide: {
+    age : 100,
+  },
+
+  router,
+  store,
+  render: h => h(App)
+}).$mount('#aaa')
+```
+ - child
+```js
+export default {
+    inject:['age'],
+    mounted(){
+        console.log(this.age); //100
+    },
+}
+```
+
+### - Options/Misc
+
+#### `name`
+
+컴포넌트에 이름을 부여. unnamed components will show up as `<AnonymousComponent>`
+
+#### `delimiters`
+
+```js
+new Vue({
+    delimiters: ['[[', ']]']
+})
+
+<div id="app">
+    <h1>[[ message ]]</h1>
+</div>
+```
+
+#### `functional`
+
+
+
+#### `model`
+
+
+#### `inheritAttrs`
+
+
+#### `comments`
+
+### - Instance Properties
+
+#### `vm.$data`
+
+#### `vm.$props`
+
+#### `vm.$el` - readonly
+
+#### `vm.$options` - readonly
+
+#### `vm.$parent` - readonly
+
+#### `vm.$root` - readonly
+
+#### `vm.$children` - readonly
+
+#### `vm.$slots` - readonly
+
+#### `vm.$scopedSlots` - readonly
+
+#### `vm.$refs` - readonly
+
+#### `vm.$isServer` - readonly
+
+#### `vm.$attrs` - readonly
+
+`$attrs` 속성은 현재 컴포넌트에 주어진 HTML 속성 중 props 데이터로 인식되지 않는 속성들을 의미한다.
+
+#### `vm.$lisnters`
+
+### - Instance Methods / Data
+
+#### `vm.$watch`
+#### `vm.$set`
+#### `vm.$delete`
+
+### -  Instance Methods / Events
+
+#### `vm.$on`
+#### `vm.$once`
+#### `vm.$off`
+#### `vm.$emit`
+
+### - Instance Methods / Lifecycle
+
+#### `vm.$mount`
+#### `vm.$forceUpdate`
+#### `vm.$nextTick`
+#### `vm.$destroy`
+
+### - Directives : `v-ooo`
+
+#### `text`
+
+```html
+<span v-text="msg"></span>
+<!-- same as -->
+<span>{{msg}}</span>
+```
+
+#### `html`
+
+
+#### `show`
+
+
+#### `if`
+
+
+#### `else`
+
+
+#### `else-if`
+
+
+#### `for`
+
+When used together with v-if, v-for has a higher priority than v-if. See the list rendering guide for details.
+
+#### `on` @
+
+
+#### `bind` :
+
+
+#### `model`
+
+```html
+<input>
+<select>
+<textarea>
+components
+```
+
+##### Modifiers
+
+v-model.lazy - listen to change events instead of input
+v-model.number - cast valid input string to numbers
+v-model.trim - trim input
+
+
+#### `slot` #
+
+The v-slot directive was introduced in Vue 2.6.0, offering an improved, alternative API to the still-supported slot and slot-scope attributes. The full rationale for introducing v-slot is described in this RFC. The slot and slot-scope attributes will continue to be supported in all future 2.x releases, but are officially deprecated and will eventually be removed in Vue 3.
+
+ - 자식
+
+```vue
+<template>
+    <div>
+        <slot name="nft"></slot>
+        <h1>Child</h1>
+    </div>
+</template>
+```
+
+ - 부모
+
+```vue
+<template>
+    <div>
+        <h1>NFT</h1>
+        <Child>
+            <template #nft>
+                <h1>PIC</h1>
+            </template>
+        </Child>
+    </div>
+</template>
+
+<script>
+import Child from "@/components/Child.vue";
+
+export default {
+    components: {
+        Child,
+    },
+}
+</script>
+```
+
+
+#### `pre`
+
+```html
+<span v-pre>{{ this will not be compiled }}</span>
+```
+
+#### `cloak`
+
+
+#### `once`
 
 <br><br><br><br><br><hr>
 
