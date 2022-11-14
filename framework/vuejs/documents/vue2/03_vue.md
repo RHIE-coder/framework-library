@@ -77,7 +77,6 @@ new Vue({
   // ...
 })
 ```
-
 #### `Vue.component()`
 
 #### `Vue.use(Plugin)`
@@ -451,6 +450,24 @@ export default {
 
 #### `cloak`
 
+1. 브라우저에서 소스 받음
+2. Vue.js 코드 실행
+3. 랜더링(화면 처리)
+
+화면 처리 이전에는 `{{ }}`, v-if 등 보여주지 않을 내용들이 그대로 노출됨
+
+```css
+[v-clock] {
+  display: none;
+}
+```
+```html
+<div v-cloak>
+  {{ message }}
+</div>
+```
+
+이제 VueJS가 모든 DOM 요소의 처리를 완료하면 자동으로 v-cloak이 사라지고 적용되었던 태그 요소들이 화면에 출력.
 
 #### `once`
 
@@ -458,34 +475,5 @@ export default {
 
 
 
-
-
-
-
-
-
-## [Learning](https://v2.vuejs.org/v2/cookbook/index.html)
-
-### - Adding Instance Properties
-
-Global Scope를 오염시키지 않으면서 사용하기
-
-```js
-// config/globalVar.js
-import Vue from "vue";
-
-Vue.prototype.$appName = "My App" // 범용적으로 쓰이는 axios가 될 수도 있다.
-
-
-// main.js
-import "@/config/globalVar";
-
-// SFC
-export default {
-    beforeCreate() {
-        console.log(this.$appName);
-    }
-}
-```
 
 
