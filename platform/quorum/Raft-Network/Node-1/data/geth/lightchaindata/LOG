@@ -1,8 +1,0 @@
-=============== Sep 20, 2022 (KST) ===============
-08:25:11.873094 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
-08:25:11.881404 db@open opening
-08:25:11.882341 version@stat F·[] S·0B[] Sc·[]
-08:25:11.885089 db@janitor F·2 G·0
-08:25:11.885113 db@open done T·3.692538ms
-08:25:11.890761 db@close closing
-08:25:11.890831 db@close done T·68.163µs
