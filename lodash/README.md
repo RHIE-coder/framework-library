@@ -1,5 +1,11 @@
 # Lodash
 
+## # suffix의 의미
+
+ - By: iteratee - The iteratee invoked per element. (`_.matches`, `_.matchesProperty`, `_.property`)
+ - While : predicate - The function invoked per iteration. (`_.matches`, `_.matchesProperty`, `_.property`)
+ - With : comparator - 인자(들)을 받아 비교나 검증(boolean 반환)
+
 ## # Array
 
 ### - [x] `_.chunk`
@@ -9,18 +15,18 @@
 ### - [x] `_.differenceBy`
 ### - [x] `_.differenceWith`
 ### - [x] `_.drop`
+### - [x] `_.dropWhile`
 ### - [x] `_.dropRight`
 ### - [x] `_.dropRightWhile`
-### - [x] `_.dropWhile`
 ### - [x] `_.fill`
 ### - [ ] `_.findIndex`
 ### - [ ] `_.findLastIndex`
 ### - [ ] `_.first -> head`
+### - [ ] `_.head`
 ### - [ ] `_.flatten`
 ### - [ ] `_.flattenDeep`
 ### - [ ] `_.flattenDepth`
 ### - [ ] `_.fromPairs`
-### - [ ] `_.head`
 ### - [ ] `_.indexOf`
 ### - [ ] `_.initial`
 ### - [ ] `_.intersection`
@@ -39,10 +45,10 @@
 ### - [ ] `_.reverse`
 ### - [ ] `_.slice`
 ### - [ ] `_.sortedIndex`
-### - [ ] `_.sortedIndexBy`
-### - [ ] `_.sortedIndexOf`
 ### - [ ] `_.sortedLastIndex`
+### - [ ] `_.sortedIndexBy`
 ### - [ ] `_.sortedLastIndexBy`
+### - [ ] `_.sortedIndexOf`
 ### - [ ] `_.sortedLastIndexOf`
 ### - [ ] `_.sortedUniq`
 ### - [ ] `_.sortedUniqBy`

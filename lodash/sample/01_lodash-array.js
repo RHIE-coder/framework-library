@@ -561,28 +561,253 @@ API.name('sortedIndexBy')
 API.name('sortedIndexOf')
     .arg('array')
     .arg('value')
+    .desc('binary search 알고리즘으로 요소를 찾음')
 {
     _.sortedIndexOf([4, 5, 5, 5, 6], 5);
     // => 1
 }
 /*********************************************/
-console.log(_.templateSettings)
-console.log
+API.name('sortedLastIndex')
+    .arg('array')
+    .arg('value')
+{
+    _.sortedLastIndex([4, 5, 5, 5, 6], 5);
+    // => 4
+}
 /*********************************************/
+API.name('sortedLastIndexBy')
+    .arg('array')
+    .arg('value')
+    .arg('[iteratee=_.identity')
+    .desc('_sortedLastIndex와 비슷하고 iteratee가 추가된 것')
+{
+    const objects = [{ 'x': 4, y: 10 }, { 'x': 6, z: 20 }, { 'x': 8, y: 30 }];
+     
+    _.sortedLastIndexBy(objects, { 'x': 7 }, function(o) { return o.x; });
+    // => 2
+     
+    // The `_.prope것ty` iteratee shorthand.
+    _.sortedLastIndexBy(objects, { 'y': 20 }, 'y');
+    // => 1
+}
 /*********************************************/
+API.name('sortedLastIndexOf')
+    .arg('array')
+    .arg('value')
+{
+    _.sortedLastIndexOf([4, 5, 5, 5, 6], 5);
+    // => 3
+}
 /*********************************************/
+// _.sortedUniq(array)
+{
+    _.sortedUniq([1, 1, 2]);
+    // => [1, 2]
+}
 /*********************************************/
+// _.sortedUniqBy(array, [iteratee])
+{
+    _.sortedUniqBy([1.1, 1.2, 2.3, 2.4], Math.floor);
+    // => [1.1, 2.3]
+}
 /*********************************************/
+{
+    _.tail([1, 2, 3]);
+    // => [2, 3]
+}
 /*********************************************/
+// _.take(array, [n=1])
+{
+    _.take([1, 2, 3]);
+    // => [1]
+    
+    _.take([1, 2, 3], 2);
+    // => [1, 2]
+    
+    _.take([1, 2, 3], 5);
+    // => [1, 2, 3]
+    
+    _.take([1, 2, 3], 0);
+    // => []
+}
 /*********************************************/
+// _.takeRight(array, [n=1])
+{
+    _.takeRight([1, 2, 3]);
+    // => [3]
+    
+    _.takeRight([1, 2, 3], 2);
+    // => [2, 3]
+    
+    _.takeRight([1, 2, 3], 5);
+    // => [1, 2, 3]
+    
+    _.takeRight([1, 2, 3], 0);
+    // => []
+}
 /*********************************************/
+// _.takeRightWhile(array, [predicate=_.identity])
+{
+    const users = [
+        { 'user': 'barney',  'active': true },
+        { 'user': 'fred',    'active': false },
+        { 'user': 'pebbles', 'active': false }
+    ];
+    
+    _.takeRightWhile(users, function(o) { return !o.active; });
+    // => objects for ['fred', 'pebbles']
+    
+    // The `_.matches` iteratee shorthand.
+    _.takeRightWhile(users, { 'user': 'pebbles', 'active': false });
+    // => objects for ['pebbles']
+    
+    // The `_.matchesProperty` iteratee shorthand.
+    _.takeRightWhile(users, ['active', false]);
+    // => objects for ['fred', 'pebbles']
+    
+    // The `_.property` iteratee shorthand.
+    _.takeRightWhile(users, 'active');
+    // => []
+}
 /*********************************************/
+// _.takeWhile(array, [predicate=_.identity])
+{
+    const users = [
+        { 'user': 'barney',  'active': false },
+        { 'user': 'fred',    'active': false },
+        { 'user': 'pebbles', 'active': true }
+    ];
+    
+    _.takeWhile(users, function(o) { return !o.active; });
+    // => objects for ['barney', 'fred']
+    
+    // The `_.matches` iteratee shorthand.
+    _.takeWhile(users, { 'user': 'barney', 'active': false });
+    // => objects for ['barney']
+    
+    // The `_.matchesProperty` iteratee shorthand.
+    _.takeWhile(users, ['active', false]);
+    // => objects for ['barney', 'fred']
+    
+    // The `_.property` iteratee shorthand.
+    _.takeWhile(users, 'active');
+    // => []
+}
 /*********************************************/
+// _.union([arrays])
+{
+    _.union([2], [1, 2]);
+    // => [2, 1]
+}
 /*********************************************/
+// _.unionBy([arrays], [iteratee=_.identity])
+{
+    _.unionBy([2.1], [1.2, 2.3], Math.floor);
+    // => [2.1, 1.2]
+    
+    // The `_.property` iteratee shorthand.
+    _.unionBy([{ 'x': 1 }], [{ 'x': 2 }, { 'x': 1 }], 'x');
+    // => [{ 'x': 1 }, { 'x': 2 }]
+}
 /*********************************************/
+// _.unionWith([arrays], [comparator])
+{
+    const objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }];
+    const others = [{ 'x': 1, 'y': 1 }, { 'x': 1, 'y': 2 }];
+    
+    _.unionWith(objects, others, _.isEqual);
+    // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }, { 'x': 1, 'y': 1 }]
+}
 /*********************************************/
+{
+    _.uniq([2, 1, 2]);
+    // => [2, 1]
+}
 /*********************************************/
+{
+    _.uniqBy([2.1, 1.2, 2.3], Math.floor);
+    // => [2.1, 1.2]
+    
+    // The `_.property` iteratee shorthand.
+    _.uniqBy([{ 'x': 1 }, { 'x': 2 }, { 'x': 1 }], 'x');
+    // => [{ 'x': 1 }, { 'x': 2 }]
+}
 /*********************************************/
+{
+    const objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }, { 'x': 1, 'y': 2 }];
+    
+    _.uniqWith(objects, _.isEqual);
+    // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
+}
 /*********************************************/
+{
+    const zipped = _.zip(['a', 'b'], [1, 2], [true, false]);
+    // => [['a', 1, true], ['b', 2, false]]
+    
+    _.unzip(zipped);
+    // => [['a', 'b'], [1, 2], [true, false]]
+}
 /*********************************************/
+{
+    const zipped = _.zip([1, 2], [10, 20], [100, 200]);
+    // => [[1, 10, 100], [2, 20, 200]]
+    
+    _.unzipWith(zipped, _.add);
+    // => [3, 30, 300]
+}
+/*********************************************/
+// _.without(array, [values]) -- _.pull 메서드와 비교
+{
+    _.without([2, 1, 2, 3], 1, 2);
+    // => [3]
+}
+/*********************************************/
+// _.xor([arrays])
+{
+    _.xor([2, 1], [2, 3]);
+    // => [1, 3]
+}
+/*********************************************/
+// _.xorBy([arrays], [iteratee=_.identity])
+{
+    _.xorBy([2.1, 1.2], [2.3, 3.4], Math.floor);
+    // => [1.2, 3.4]
+    
+    // The `_.property` iteratee shorthand.
+    _.xorBy([{ 'x': 1 }], [{ 'x': 2 }, { 'x': 1 }], 'x');
+    // => [{ 'x': 2 }]
+}
+/*********************************************/
+// _.xorWith([arrays], [comparator])
+{
+    const objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }];
+    const others = [{ 'x': 1, 'y': 1 }, { 'x': 1, 'y': 2 }];
+    
+    _.xorWith(objects, others, _.isEqual);
+    // => [{ 'x': 2, 'y': 1 }, { 'x': 1, 'y': 1 }]
+}
+/*********************************************/
+{
+    _.zip(['a', 'b'], [1, 2], [true, false]);
+    // => [['a', 1, true], ['b', 2, false]]
+}
+/*********************************************/
+// _.zipObject([props=[]], [values=[]])
+{
+    _.zipObject(['a', 'b'], [1, 2]);
+    // => { 'a': 1, 'b': 2 }
+}
+/*********************************************/
+{
+    _.zipObjectDeep(['a.b[0].c', 'a.b[1].d'], [1, 2]);
+    // => { 'a': { 'b': [{ 'c': 1 }, { 'd': 2 }] } }
+}
+/*********************************************/
+// _.zipWith([arrays], [iteratee=_.identity])
+{
+    _.zipWith([1, 2], [10, 20], [100, 200], function(a, b, c) {
+        return a + b + c;
+    });
+    // => [111, 222]
+}
 /*********************************************/
