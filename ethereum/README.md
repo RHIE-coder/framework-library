@@ -130,3 +130,7 @@ Decentralized autonomous organizations (DAOs)
  - Dai
  - USDC
  - Tether
+
+# [DID]
+
+ERC-725
