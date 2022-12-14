@@ -139,6 +139,8 @@ sudo systemctl start docker
 sudo docker run hello-world
 ```
 
+if `WSL2` then `sudo service docker start`
+
 <br><br><br>
 
 ### - Uninstall Docker Engine

@@ -110,7 +110,7 @@ UID, GID 별로 독립적으로 가짐
 
 namespace별로 독자적으로 호스트명이나 도메인명을 가질 수 있음
 
-#### IPC namespace
+### IPC namespace
 
 프로세스 간의 통신 오브젝트를 namespace별로 독립적으로 가질 수 있음
 
@@ -122,6 +122,15 @@ Docker는 물리 머신 상의 자원을 여러 컨테이너가 공유하여 작
 
 이 떄 Linux 커널의 기능인 contrl groups 기능을 사용하여 자원의 할당 등을 관리한다.
 
+ - `cpu`: CPU 사용량 제한
+ - `cpuacct`: CPU 사용량 통계 정보를 제공
+ - `cpuset`: CPU나 메모리 배치를 제어
+ - `memory`: 메모리나 스왑 사용량을 제한
+ - `devices`: 디바이스에 대한 액세스 허가/거부
+ - `freezer`: 그룹에 속한 프로세스 정지/재개
+ - `net_cls`: 네트워크 제어 태그를 부가
+ - `blkio`: 블록 디바이스 입출력량 제어
+
  <hr><br><br><br><br><br>
 
 ## # 네트워크 구성(가상 브리지/가상 NIC)
@@ -130,9 +139,29 @@ Docker는 물리 머신 상의 자원을 여러 컨테이너가 공유하여 작
 
 도커 컨테이너가 실행되면 컨테이너에 172.17.0.0/16이라는 서브넷 마스크를 가진 프라이빗 IP주소가 eth0으로 자동으로 할당됨
 
+### - NAT(Network Address Translation)
+
+ 프라이빗 IP --> NAT가 가지고 있는 글로벌 주소
+
+ 주소 변환에에 의해 프라이빗 네트워크상의 컴퓨터와 인터넷 상의 서버간의 통신이 성립
+
+ but, 글로벌 IP 주소와 프라이빗 IP 주소를 1:1로 변환하기 때문에 동시에 여러 클라이언트가 엑세스 할 수 없음
+
+### - NAPT(Network Address Port Translation)
+
+ 프라이빗 IP 주소와 함께 포트 번호도 같이 변환하는 기술
+
+ 하나의 글로벌 IP주소와 여러 개의 프라이빗 IP 주소를 변환할 수 있음
+
+ Linux에서 NAPT를 구축하는 것을 IP 마스커레이드(mascarade)라고 함-가면무도회
+
  <hr><br><br><br><br><br>
 
 ## # Docker 활용하기
+
+### - 버전 확인
+
+`docker version`
 
 ### - 도커 실행 환경 확인
 
