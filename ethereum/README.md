@@ -8,11 +8,66 @@
 
 공개키: 개인키 --> ECDSA(Elliptic Curve Digital Signature Algorithm) 타원 곡선 --> 공개키
 
-주소: 공개키 --> Keccak256 --> 64 중 마지막 20을 주소로 사용
+주소: 공개키 --> Keccak256 --> 64(32바이트) 중 마지막 40(20바이트)을 주소로 사용
  - 오류 탐지 EIP-55
  - National Institute of Science and Technology(NIST) 주최 SHA-3에서 우승한 Keccak을 이더리움이 개발 때 사용 but, NIST가 효율성 향상을 위해 코드를 수정했는데 결함이 발생해 FIP-202 SHA-3 표준화가 늦음.
  - 결국 이더리움 에서 사용하는 SHA-3 알고리즘과 NIST 표준 SHA-3 알고리즘은 결과가 다름.
  - EIP-59를 통해 SHA-3 네이밍을 고민한 것을 볼 수 있음. https://github.com/ethereum/EIPs/issues/59
+
+https://steemit.com/kr-dev/@modolee/mastering-ethereum-3 (EIP55)
+
+https://steemit.com/busy/@anpigon/ethereum-3(r,s,v 값에서 발신자 공개키 계산)
+
+ - https://github.com/ethereum/go-ethereum/blob/v1.10.26/crypto/secp256k1/secp256.go
+      - `func RecoverPubKey`
+
+`BN` : Block Number (타원곡선 알고리즘 변수로 나온 약자)
+
+## # 비트코인 지갑
+
+PubKey ==> SHA256 ==> RIPEMD160(160bits key hash) ==> Base58Check ==> Bitcoin Address
+
+## # 서명 원리
+
+### - Transaction Hash 값
+
+#### Transaction Data
+ - nonce
+ - gas_price
+ - gas_limit
+ - chain_id
+ - recipient_address
+ - amount
+ - payload
+
+```
+Transaction Data
+    |
+    | 
+RLP:serialization 이더리움에서 쓰이는 직렬화 기법
+    |
+    |
+Keccak
+    |
+    |
+TransactionHash (32 byte)
+```
+
+#### Signature Data
+ - r: 32 byte
+ - s: 32 byte
+ - v: `EIP155` chain_id 포함(Replay 어택 방지). 실제 서명정보 확인시 1 byte의 recid(recognize_id)만 사용
+    - 각 블록체인 네트워크마다 chain_id가 다르기 때문에 같은 트랜젝션으로 여러 네트워크에 브로트캐스팅되는 것을 방지할 수 있다.
+
+```
+secp256k1 sign(Transaction Hash 32 byte, Private Key 32 byte) => Signature Data(r,s,v)
+```
+
+#### SignedTransaction
+
+```
+SignedTransaction = Transaction Data + Signature Data
+```
 
 ## # HD Wallet
 
@@ -26,7 +81,13 @@ m / purpose' / coin_type' / account' / change / address_index
  - change: 0(내부체인) 1(외부체인)
  - address_index: n번째 지갑(`자식키(0번부터 2^32 -1번) : 총 2^32개`)
 
+ 만약 이더리움 지갑을 개발한다면 BIP-32, BIP-39, BIP-43, BIP-44 표준에 따라 니모닉 코드를 시드로 사용하는 HD지갑으로 구현
 
+```
+Root Seed(128, 256, 512 bit) --> HMAC-SHA512
+HMAC-SHA512 왼쪽 256비트 ---> 마스터 개인키(256) --> 마스터 공개키(264)
+HMAC-SHA512 오른쪽 256비트 --> 마스터 체인코드(256)
+```
 
 ### - 메타마스크(HD Wallet) 관련
 

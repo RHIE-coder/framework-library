@@ -20,7 +20,9 @@ class JsonRpcRequester {
 }
 
 (async() => {
-    
+   const rpc = new JsonRpcRequester('http://localhost:8545');
+   
+   
     
 
 })()
