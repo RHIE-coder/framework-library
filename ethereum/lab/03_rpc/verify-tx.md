@@ -28,3 +28,4 @@ to 필드에 트랜잭션 수시자가 지정되며 20바이트 이더리움 주
 https://medium.com/rayonprotocol/%EC%9D%B4%EB%8D%94%EB%A6%AC%EC%9B%80-%EA%B3%84%EC%A0%95%EC%9C%BC%EB%A1%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%84%9C%EB%AA%85-%EB%B0%8F-%EA%B2%80%EC%A6%9D-5fb856a96cf4
 
 
+https://bitkunst.tistory.com/entry/BlockChain-%EA%B0%9C%EC%9D%B8%ED%82%A4-%EA%B3%B5%EA%B0%9C%ED%82%A4-%EC%84%9C%EB%AA%85-%EC%A7%80%EA%B0%91%EA%B3%84%EC%A0%95
