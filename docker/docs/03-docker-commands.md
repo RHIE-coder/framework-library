@@ -265,3 +265,333 @@ Docker 컨테이너끼리 통신은 Docker 네트워크를 통해 수행함
 
 ### - 네트워크 목록 표시
 
+`docker network ls [옵션]`
+
+#### 옵션
+ - `--filter=[], -f` 출력을 필터링한다.
+ - `--no-trunc` 상세 정보를 출력한다
+ - `--quiet, -q` 네트워크 ID만 표시한다.
+
+Docker는 기본값으로 bridge, host, none 이 3개의 네트워크를 만듬
+
+
+<br><br><br>
+
+### - 네트워크 작성
+
+`docker network create [옵션] 네트워크`
+
+#### 옵션
+
+ - `--driver, -d` 네트워크 브리지 또는 오버레이(기본값 bridge)
+ - `--ip-range` 컨테이너에 할당하는 IP 주소 범위를 지정
+ - `--subnet` 서브넷을 CIDR 형식으로 지정
+ - `--ipv6` IPv6 네트워크를 유효화할 지말지(true/false)
+ - `-label` 네트워크에 설정하는 라벨
+
+```
+docker network create --driver=bridge web-network
+```
+
+#### CIDR
+
+Classless Inter-Domain Routing
+
+`/24` : 24비트 이후에 오는 4번째 옥텟을 전부 사용할 수 있다는 표현
+
+ - `192.168.0.0/24` : 192.168.0.0 ~ 192.168.0.255
+
+<br><br><br>
+
+### - 네트워크 연결
+
+`docker network connect [옵션] 네트워크 컨테이너`
+
+#### 옵션
+
+ - `--ip` IPv4 주소
+ - `--ip6` IPv6 주소
+ - `--alias` 앨리어스명
+ - `--link` 다른 컨테이너에 대한 링크
+
+
+#### `my-server`라는 컨테이너를 `web-network`라는 도커 네트워크에 연결시키기
+
+```
+docker network connect web-network my-server
+```
+
+#### 컨테이너 실행하면서 네트워크에 연결
+
+```
+docker container run -itd --name=webapp --net=web-network my-container
+```
+
+#### 네트워크 연결 해제
+
+`docker network disconnect`
+
+```
+docker network disconnect web-network webapp
+```
+
+<br><br><br>
+
+### - 네트워크 상세 정보 확인
+
+`docker network inspect [옵션] 네트워크`
+
+```
+docker network inspect web-network
+```
+
+#### 컨테이너 네트워크 확인
+
+```js
+docker container inspect sample
+```
+
+네트워크를 명시적으로 지정하지 않으면 기본값으로 bridge를 잡음
+
+<br><br><br>
+
+### - 네트워크 삭제(docker network rm)
+
+`docker network rm [옵션] 네트워크`
+
+```
+docker network rm web-server
+```
+
+<hr><br><br><br><br><br>
+
+## # 가동 중인 컨테이너 조작
+
+### - 가동 컨테이너 연결 `docker container attach`
+
+```
+docker container attach sample
+```
+
+ - 연결한 컨테이너를 종료: `[CTRL] + C`
+ - 컨테이너에서 분리: `[CTRL] + P, [CTRL] + Q`
+
+<br><br><br>
+
+### - 가동 컨테이너에서 프로세스 실행 `docker container exec`
+
+`docker container exec [옵션] <컨테이너 식별자> <실행할 명령> [인수]`
+
+#### 옵션
+
+ - `--detach, -d` 명령을 백그라운드에서 실행한다
+ - `--interactive, -i` 컨테이너 표준 입력을 연다
+ - `--tty, -t` tty 사용
+ - `--user, -u` 사용자명 지정
+
+```
+docker container exec -it webserver /bin/echo "Hello World"
+```
+
+<br><br><br>
+
+### - 가동 컨테이너의 프로세스 확인 `docker container top`
+
+```
+docker container top sebserver
+```
+
+<br><br><br>
+
+### - 가동 컨테이너의 포트 전송 확인 `docker container port`
+
+```
+docker container port webserver
+```
+
+<br><br><br>
+
+### - 컨테이너 이름 변경 `docker container rename`
+
+```
+docker container rename old new
+```
+
+
+<br><br><br>
+
+### - 컨테이너 안의 파일을 복사 `docker container cp`
+
+`docker container cp <컨테이너 식별자>:<컨테이너 안의 파일 경로> <호스트의 디렉토리 경로>`
+
+`docker container cp <호스트의 디렉토리 경로> <컨테이너 식별자>:<컨테이너 안의 파일 경로>`
+
+```
+docker container cp ./test.txt webserver:/tmp/test.txt
+```
+
+<br><br><br>
+
+### - 컨테이너 조작의 차분 확인 `docker container diff`
+
+`docker container diff <컨테이너 식별자>`
+
+컨테이너 안에서 어떤 조작을 하여 컨테이너가 이미지로부터 생성되었을 때와 달라진 점을 확인
+
+#### 변경의 구분
+ - `A` 파일 추가
+ - `D` 파일 삭제
+ - `C` 파일 수정
+
+<hr><br><br><br><br><br>
+
+## # 도커 이미지 생성
+
+도커 컨테이너는 도커 이미지를 바탕으로 작성되지만
+
+반대로 컨테이너를 바탕으로 이미지를 작성할 수도 있음
+
+### - 컨테이너로부터 이미지 작성
+
+`docker container commit [옵션] <컨테이너 식별자> [이미지명[:태그명]]`
+
+#### 옵션
+ - `--author, -a` 작성자를 지정함
+ - `--message, -m` 메시지를 지정함
+ - `--change, -c` commit시 Dockerfile 명령을 지정
+ - `--pause, -p` 컨테이너를 일시정지하고 commit
+
+```
+docker container commit -a "rhie-coder" webserver rhie/webapp:1.0
+```
+
+<br><br><br>
+
+### - 컨테이너를 tar 파일로 출력
+
+`docker container export <컨테이너 식별자>`
+
+```sh
+docker container export webserver > latest.tar
+tar -tf latest.tar | more #확인하기
+```
+
+<br><br><br>
+
+### - 이미지 저장(from tar파일)
+
+`docker image save [옵션] <저장 파일명> [이미지명]`
+
+#### 옵션
+ - `-o` 저장할 파일명
+
+```
+docker image save -o export.tar tensorflow
+```
+
+<br><br><br>
+
+
+### - 이미지 읽어 들이기
+
+`docker image load [옵션]`
+
+#### 옵션
+ - `-i` 읽어 들일 파일명
+
+```
+docker image load -i export.tar
+```
+
+<br><br><br>
+
+### - export/import & save/load 차이
+
+#### docker container export
+
+```
+# docker container export my-web-server > export.tar
+
+# tar xvf export.tar
+
+total 141072
+drwxr-xr-x 22 rhiemh rhiemh      4096 Dec 15 21:37 ./
+drwxr-xr-x  4 rhiemh rhiemh      4096 Dec 15 21:37 ../
+-rwxr-xr-x  1 rhiemh rhiemh         0 Dec 15 21:34 .dockerenv*
+drwxr-xr-x  2 rhiemh rhiemh      4096 Dec  5 09:00 bin/
+drwxr-xr-x  2 rhiemh rhiemh      4096 Sep  3 21:10 boot/
+drwxr-xr-x  4 rhiemh rhiemh      4096 Dec 15 21:34 dev/
+drwxr-xr-x  2 rhiemh rhiemh      4096 Dec 14 10:20 docker-entrypoint.d/
+-rwxr-xr-x  1 rhiemh rhiemh      1616 Dec 14 10:19 docker-entrypoint.sh*
+drwxr-xr-x 34 rhiemh rhiemh      4096 Dec 15 21:34 etc/
+-rw-r--r--  1 rhiemh rhiemh 144361472 Dec 15 21:37 export.tar
+drwxr-xr-x  2 rhiemh rhiemh      4096 Sep  3 21:10 home/
+drwxr-xr-x  8 rhiemh rhiemh      4096 Dec  5 09:00 lib/
+drwxr-xr-x  2 rhiemh rhiemh      4096 Dec  5 09:00 lib64/
+drwxr-xr-x  2 rhiemh rhiemh      4096 Dec  5 09:00 media/
+drwxr-xr-x  2 rhiemh rhiemh      4096 Dec  5 09:00 mnt/
+drwxr-xr-x  2 rhiemh rhiemh      4096 Dec  5 09:00 opt/
+drwxr-xr-x  2 rhiemh rhiemh      4096 Sep  3 21:10 proc/
+drwx------  2 rhiemh rhiemh      4096 Dec  5 09:00 root/
+drwxr-xr-x  3 rhiemh rhiemh      4096 Dec 15 21:34 run/
+drwxr-xr-x  2 rhiemh rhiemh      4096 Dec  5 09:00 sbin/
+drwxr-xr-x  2 rhiemh rhiemh      4096 Dec  5 09:00 srv/
+drwxr-xr-x  2 rhiemh rhiemh      4096 Sep  3 21:10 sys/
+drwxr-xr-x  2 rhiemh rhiemh      4096 Dec 14 10:20 tmp/
+drwxr-xr-x 11 rhiemh rhiemh      4096 Dec  5 09:00 usr/
+drwxr-xr-x 11 rhiemh rhiemh      4096 Dec  5 09:00 var/
+```
+
+export로 만들어진 tar은 import로 불러오기
+
+
+#### docker image save
+
+레이어 구조 포함
+
+```
+# docker image save -o save.tar nginx
+
+# tar -xvf save.tar
+
+36bb53b48a5a488898b13f2d1aa8b283970fa2c791771ea973710be659583b7f/
+36bb53b48a5a488898b13f2d1aa8b283970fa2c791771ea973710be659583b7f/VERSION
+36bb53b48a5a488898b13f2d1aa8b283970fa2c791771ea973710be659583b7f/json
+36bb53b48a5a488898b13f2d1aa8b283970fa2c791771ea973710be659583b7f/layer.tar
+37e0d9913a44679ff2dd6709586c94269c0309dcc7d1f1a15e9a4a8cf641eacf/
+37e0d9913a44679ff2dd6709586c94269c0309dcc7d1f1a15e9a4a8cf641eacf/VERSION
+37e0d9913a44679ff2dd6709586c94269c0309dcc7d1f1a15e9a4a8cf641eacf/json
+37e0d9913a44679ff2dd6709586c94269c0309dcc7d1f1a15e9a4a8cf641eacf/layer.tar
+3964ce7b84589cf9bc585415741b642b7167229e0afde03f502f6c848ed3279d.json
+44b545a66656a392b718c5557424c8cc73bfeb9856a041d5d3e5eaf8ad8b36fb/
+44b545a66656a392b718c5557424c8cc73bfeb9856a041d5d3e5eaf8ad8b36fb/VERSION
+44b545a66656a392b718c5557424c8cc73bfeb9856a041d5d3e5eaf8ad8b36fb/json
+44b545a66656a392b718c5557424c8cc73bfeb9856a041d5d3e5eaf8ad8b36fb/layer.tar
+731fe0ea4745f8f281b41b1e5816f52aab34fde6e1385d0c67b1e01fc4cee6cf/
+731fe0ea4745f8f281b41b1e5816f52aab34fde6e1385d0c67b1e01fc4cee6cf/VERSION
+731fe0ea4745f8f281b41b1e5816f52aab34fde6e1385d0c67b1e01fc4cee6cf/json
+731fe0ea4745f8f281b41b1e5816f52aab34fde6e1385d0c67b1e01fc4cee6cf/layer.tar
+75e637380ce0ec4fbfe15027e07d043469116284482d847bf96dc46904cef37b/
+75e637380ce0ec4fbfe15027e07d043469116284482d847bf96dc46904cef37b/VERSION
+75e637380ce0ec4fbfe15027e07d043469116284482d847bf96dc46904cef37b/json
+75e637380ce0ec4fbfe15027e07d043469116284482d847bf96dc46904cef37b/layer.tar
+a9c099edbf24136c64c75e439b4e198e2b0e0b4a1f03ed51670941fe649037c3/
+a9c099edbf24136c64c75e439b4e198e2b0e0b4a1f03ed51670941fe649037c3/VERSION
+a9c099edbf24136c64c75e439b4e198e2b0e0b4a1f03ed51670941fe649037c3/json
+a9c099edbf24136c64c75e439b4e198e2b0e0b4a1f03ed51670941fe649037c3/layer.tar
+manifest.json
+repositories
+```
+save로 만들어진 tar은 load로 불러오기
+
+
+<br><br><br>
+
+### - 불필요한 이미지/컨테이너를 일괄 삭제
+
+`docker system prune [옵션]`
+
+#### 옵션
+ - `--all, -a` 사용하지 않는 리소스를 모두 삭제한다.
+ - `--force, -f` 강제적으로 삭제한다.
+
