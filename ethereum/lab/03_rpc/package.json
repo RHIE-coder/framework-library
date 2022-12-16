@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "axios": "^1.2.1"
+    "abi-decoder": "^2.4.0",
+    "axios": "^1.2.1",
+    "ethers": "^5.7.2"
   }
 }
