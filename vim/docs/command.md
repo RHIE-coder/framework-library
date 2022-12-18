@@ -84,6 +84,7 @@
 | :set wrap `or` nowrap | 줄넘김 유무|
 | gf, gx | 해당 위치 text의 파일 열기(gf)와 URL열기(gx) |
 | `--Netrw--` | :e, Vexplore, Sexplorer |
+| `[CTRL]`+p | 이전 커맨드 다시 |
 
 
 <br><br><br>
