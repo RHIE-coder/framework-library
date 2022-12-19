@@ -2,6 +2,7 @@
   "dependencies": {
     "abi-decoder": "^2.4.0",
     "axios": "^1.2.1",
-    "ethers": "^5.7.2"
+    "ethers": "^5.7.2",
+    "wscat": "^5.2.0"
   }
 }

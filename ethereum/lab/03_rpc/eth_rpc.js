@@ -249,19 +249,20 @@ class JsonRpcRequester {
     // }));
     console.log('---------------------');
 
-    // // The sign method calculates an Ethereum specific signature with: sign(keccak256("\x19Ethereum Signed Message:\n" + len(message) + message))).
-    // method = 'eth_sign';
-    // console.log(method);
-    // const eth_sign = await rpc.request({
-    //     method,
-    //     params: [
-    //         eth_accounts.result[1],
-    //         "0x5363686f6f6c627573",
-    //     ]
-    // });
-    // console.log(eth_sign);
-    // console.log('---------------------');
+    // The sign method calculates an Ethereum specific signature with: sign(keccak256("\x19Ethereum Signed Message:\n" + len(message) + message))).
+    method = 'eth_sign';
+    console.log(method);
+    const eth_sign = await rpc.request({
+        method,
+        params: [
+            eth_accounts.result[1],
+            "0x5363686f6f6c627573", // Schoolbus
+        ]
+    });
+    console.log(eth_sign);
+    console.log('---------------------');
 
+    
 
 
 
