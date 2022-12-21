@@ -4,13 +4,21 @@ const http = require('http');
 const path = require('path');
 const morgan = require('morgan');
 
+const moduleLoader = require('./module-loader')(__dirname, {
+    "@": "./",
+})
+
+console.log(require('crypto'))
+console.log(require('@/utils/format'));
+console.log(require('@/utils/memory'));
+
 app.use(require('cors')())
 app.use('/public', express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({extended: true}));
 app.use(express.json())
 app.use(require('cookie-parser')());
 app.use(require('express-session')({
-    secret: 'test',
+    secret: 'my-secret-key',
     resave: true,
     saveUninitialized: false,
 }))
@@ -19,7 +27,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(
-    morgan(':remote-addr - :remote-user [:date] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms :req[headers]')
+    morgan(':remote-addr - :remote-user [:date] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms')
 );
 // app.use(morgan('combined'))
 

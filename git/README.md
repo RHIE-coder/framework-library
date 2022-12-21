@@ -29,7 +29,8 @@ git commit -m "Commit Message"
 ## # `git merge`
 
 ```bash
-
+git checkout master
+git merge --no-ff dev # create merge commit even if it can be resolved as a fast-forward
 ```
 
 ## # `git rebase`

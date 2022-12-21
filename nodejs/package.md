@@ -12,4 +12,6 @@
 
 ```sh
 npm link local-packages/lib
+###
+npm install local-package/lib
 ```

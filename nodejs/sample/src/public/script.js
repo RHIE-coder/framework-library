@@ -114,3 +114,12 @@ document.getElementById('four').addEventListener('click', async (event)=>{
     console.log(await result.json());
 
 })
+
+document.getElementById('pro').addEventListener('click', async (event)=>{
+    const result = await API.requester({
+        method: "GET",
+        route: "/pro",
+    });
+    console.log(await result.text());
+
+})
