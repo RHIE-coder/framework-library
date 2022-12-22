@@ -1,18 +1,18 @@
-// This package takes inspiration from better-module-alias 
+// This package takes inspiration from module-alias & better-module-alias
+// https://github.com/ilearnio/module-alias
 // https://github.com/Sawtaytoes/better-module-alias
 
 const BuiltinModule = require('module')
 const path = require('path')
 
 // Guard against poorly mocked module constructors
-const Module = (
-	module.constructor.length > 1
-		? module.constructor
-		: BuiltinModule
-)
+const Module = module.constructor.length > 1
+			    ? module.constructor
+			    : BuiltinModule
 
-const moduleAliases = {}
-const moduleAliasNames = []
+
+const moduleAliasMapper = {}
+const moduleAliasNameList = []
 
 const getBasePathFromFilePath = filepath => filepath.replace(/^(.+)[\\/]node_modules$/, '$1')
 
@@ -42,23 +42,14 @@ const getModifiedRequest = ({
 		)
 	}
 
-	const basePath = (
-		getBasePathFromFilePath(
-			parentFilePath
-		)
-	)
+	const basePath = getBasePathFromFilePath(parentFilePath)
+	
 
-	const aliasTarget = (
-		moduleAliases[basePath][alias]
-	)
+	const aliasTarget = moduleAliases[basePath][alias]
+	
 
-	return (
-		requestedFilePath
-			.replace(
-				alias,
-				aliasTarget,
-			)
-	)
+	return requestedFilePath.replace(alias, aliasTarget)
+	
 }
 
 const originalResolveFilename = Module._resolveFilename
@@ -121,13 +112,18 @@ const getAliasesFromPackageJson = (basePath) => {
 	return moduleAliases;
 };
 
+const scanConfigFile = (from) => {
+	configFileName = configFileName ?? 'jsconfig.json';
 
-const setupModuleAliases = (basePath, functionImports) => {
-	let aliases = [];
-	if (functionImports) {
-		aliases = functionImports;
+}
+
+const init = (config) => {
+	const aliases = [];
+	if(config?.rootPath) throw new ReferenceError('the rootPath should not be empty')
+	if (aliasesMapping) {
+		aliases = aliasesMapping;
 	} else {
-		aliases = getAliasesFromPackageJson(basePath);
+		aliases = scanConfigFile(rootPath);
 	}
 
 	addModuleAliases(basePath, aliases);
@@ -135,4 +131,4 @@ const setupModuleAliases = (basePath, functionImports) => {
 
 
 
-module.exports = setupModuleAliases;
+module.exports = init;

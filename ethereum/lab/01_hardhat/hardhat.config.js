@@ -1,7 +1,7 @@
 require("@nomicfoundation/hardhat-toolbox");
 
 // account: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
-const privateKey = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
+const privateKey = 'a2d10670b32aee8a1e219c208b9f7564c4b824c3d851d36e7b8df3da4639581d';
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
   },
   networks: {
     localNet: {
-      url: 'http://localhost:8545',
+      url: 'http://192.168.100.73:8545',
       accounts: [privateKey],
     }
   }

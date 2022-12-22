@@ -1,4 +1,4 @@
-module.exports = class Message {
+module.exports = class ResponseMessage {
     static success(args){
         return {
             code: 200,

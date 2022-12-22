@@ -4,14 +4,11 @@ const http = require('http');
 const path = require('path');
 const morgan = require('morgan');
 
-const moduleLoader = require('./module-loader')(__dirname, {
+require('../module-loader')(__dirname, {
     "@": "./",
 })
 
-console.log(require('crypto'))
-console.log(require('@/utils/format'));
-console.log(require('@/utils/memory'));
-
+//TODO: Project Mapping in Context
 app.use(require('cors')())
 app.use('/public', express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({extended: true}));
