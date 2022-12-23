@@ -4,7 +4,6 @@ console.log(myUUID);
 const RequestGenerator = require('./request-generator');
 
 (async()=>{
-    const callbackUrl = ''
     const apiKey = ''
 
     const req = new RequestGenerator()
@@ -19,10 +18,7 @@ const RequestGenerator = require('./request-generator');
                 num: 111,
                 message: "hello world",
             },
-            callbackUrl,  
         })
-    // console.log(req.getRequestData())
-
 
     const res = await req.request();
 
