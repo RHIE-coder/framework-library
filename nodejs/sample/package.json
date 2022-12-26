@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon -w \"./src/**/*\" -x \"node ./src/app.js\""
+    "dev": "nodemon -w \"./**/*\" -x \"node ./src/app.js\""
   },
   "keywords": [],
   "author": "",

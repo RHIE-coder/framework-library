@@ -1,0 +1,33 @@
+{
+  "name": "@flagtail/type-flow",
+  "version": "0.1.0",
+  "description": "Create aliases of directories and register custom module paths in NodeJS",
+  "main": "dist/type-flow.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flagtail/flagtail-tools.git"
+  },
+  "keywords": [
+    "flagtail",
+    "validate",
+    "type-handler"
+  ],
+  "author": {
+    "name": "rhie-coder",
+    "url": "https://github.com/rhie-coder"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/flagtail/flagtail-tools/issues"
+  },
+  "homepage": "https://github.com/flagtail/flagtail-tools/tree/main/packages/type-flow#readme",
+  "devDependencies": {
+    "jest": "^29.3.1"
+  } 
+}
