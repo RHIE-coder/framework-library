@@ -1,5 +1,3 @@
-
-
 class API {
 
     /*
@@ -57,6 +55,11 @@ class API {
     }
 
 }
+/*********************  
+ *                   *
+ *      EXAMPLE      *
+ *                   *
+ *********************/
 
 document.getElementById('one').addEventListener('click', async (event)=>{
     const result = await API.requester({
@@ -115,11 +118,27 @@ document.getElementById('four').addEventListener('click', async (event)=>{
 
 })
 
-document.getElementById('pro').addEventListener('click', async (event)=>{
+document.getElementById('pro-reg').addEventListener('click', async (event)=>{
     const result = await API.requester({
-        method: "GET",
-        route: "/pro",
+        method: "POST",
+        route: "/pro/reg",
     });
-    console.log(await result.text());
+    console.log(await result.json());
+
+})
+document.getElementById('pro-one').addEventListener('click', async (event)=>{
+    const result = await API.requester({
+        method: "POST",
+        route: "/pro/one",
+    });
+    console.log(await result.json());
+
+})
+document.getElementById('pro-two').addEventListener('click', async (event)=>{
+    const result = await API.requester({
+        method: "POST",
+        route: "/pro/two",
+    });
+    console.log(await result.json());
 
 })

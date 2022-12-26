@@ -23,8 +23,17 @@ class RequestGenerator {
         return this;
     }
 
+    header(headers) {
+        this.#reqData.headers = {
+            ...this.#reqData.headers,
+            ...headers,
+        }
+        return this;
+    }
+
     authorization(token) {
         this.#reqData.headers = {
+            ...this.#reqData.headers,
             Authorization: token,
         };
         return this;

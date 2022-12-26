@@ -4,7 +4,7 @@ const http = require('http');
 const path = require('path');
 const morgan = require('morgan');
 
-require('../../module-path-mapper')({
+require('@flagtail/jsconfig-alias-mapper')({
     rootPath: path.join(__dirname, '..'),
 })
 
@@ -27,7 +27,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(
     morgan(':remote-addr - :remote-user [:date] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms')
 );
-// app.use(morgan('combined'))
 
 const route = express.Router();
 const routesPath = path.join(__dirname, 'routes');
@@ -38,7 +37,11 @@ require("fs")
     .forEach(file=> {
         const method = file.split("#")[0];
         const url = "/"+file.split("#")[1].replaceAll("-","/");
-        route[method.toLowerCase()](url, require(`${routesPath}/${file}`));
+        const routeInfo = require(`${routesPath}/${file}`);
+        const middleware = routeInfo?.middleware ?? [];
+        const router = routeInfo?.router;
+        if(!router) throw new ReferenceError(`[ ${file} ] file must have 'router' property`)
+        route[method.toLowerCase()](url, middleware, router);
     })
 app.use("/", route);
 

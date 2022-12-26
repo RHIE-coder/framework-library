@@ -1,4 +1,4 @@
-module.exports = class ResponseMessage {
+class ResponseMessage {
     static success(args){
         return {
             code: 200,
@@ -13,4 +13,8 @@ module.exports = class ResponseMessage {
             result: args?.msg ?? "error",
         }
     }
+}
+
+module.exports = {
+    ResponseMessage,
 }

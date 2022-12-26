@@ -42,3 +42,11 @@ app.use(morgan('short'));
 */
 app.use(morgan('tiny'));
 ```
+
+## # custom
+
+```js
+app.use(
+    morgan(':remote-addr - :remote-user [:date] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms')
+);
+```
