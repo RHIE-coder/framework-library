@@ -31,6 +31,11 @@ app.use(
 const route = express.Router();
 const routesPath = path.join(__dirname, 'routes');
 
+app.use('/pro', (req, res, next) => {
+    console.log('pro pro pro');
+    next();
+})
+
 require("fs")
     .readdirSync(routesPath, {withFileTypes:false})
     .map(file => path.basename(file, path.extname(file)))
