@@ -5,21 +5,17 @@ import (
 )
 
 func main() {
-	i := 1
 
-	switch i {
-	case 0:
-		fmt.Println(0)
-	case 1:
-		fmt.Println(1)
-		fallthrough
-	case 2:
-		fmt.Println(2)
-		break
-	case 3:
-		fmt.Println(3)
-		fallthrough
-	default:
-		fmt.Println(-1)
+	a := map[string]int {
+		"hello" : 10,
+		"world" : 20,
+		"abcde" : 30,
+	}
+
+	value, isExist := a["none"]
+	fmt.Println(value, isExist) // 0 false
+
+	if value, isExist := a["hello"]; isExist {
+		fmt.Println(value, isExist) // 10 true
 	}
 }
