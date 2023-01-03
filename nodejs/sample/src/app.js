@@ -4,9 +4,7 @@ const http = require('http');
 const path = require('path');
 const morgan = require('morgan');
 
-require('@flagtail/jsconfig-alias-mapper')({
-    rootPath: path.join(__dirname, '..'),
-})
+require('@flagtail/jsconfig-alias-mapper')()
 
 require('@/utils/message')
 
