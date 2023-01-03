@@ -4,11 +4,7 @@ const http = require('http');
 const path = require('path');
 const morgan = require('morgan');
 
-require('@flagtail/jsconfig-alias-mapper')({
-    rootPath: path.join(__dirname, '..'),
-})
-
-require('@/utils/message')
+require('@flagtail/jsconfig-alias-mapper')();
 
 app.use(require('cors')())
 app.use('/public', express.static(path.join(__dirname, 'public')))
@@ -28,20 +24,26 @@ app.use(
     morgan(':remote-addr - :remote-user [:date] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms')
 );
 
-const route = express.Router();
-const routesPath = path.join(__dirname, 'routes');
 
-app.use('/pro', (req, res, next) => {
-    console.log('pro pro pro');
-    next();
-})
+/* ******************************************* */
+                  /* routes */
+const routeLoaderConfig = {
+    routesPath: path.join(__dirname, 'routes'),
+    method:'@',
+    delimiter: '-',
+    param: '#',
+}
+const route = express.Router();
+const routesPath = routeLoaderConfig.routesPath ?? path.join(__dirname, 'routes'); 
 
 require("fs")
     .readdirSync(routesPath, {withFileTypes:false})
     .map(file => path.basename(file, path.extname(file)))
     .forEach(file=> {
-        const method = file.split("#")[0];
-        const url = "/"+file.split("#")[1].replaceAll("-","/");
+        const method = file.split(routeLoaderConfig.method)[0];
+        const url = "/" + file.split(routeLoaderConfig.method)[1]
+                              .replaceAll(routeLoaderConfig.delimiter,"/")
+                              .replaceAll(routeLoaderConfig.param,':');
         const routeInfo = require(`${routesPath}/${file}`);
         const middleware = routeInfo?.middleware ?? [];
         const router = routeInfo?.router;
@@ -49,6 +51,7 @@ require("fs")
         route[method.toLowerCase()](url, middleware, router);
     })
 app.use("/", route);
+/* ******************************************* */
 
 http.createServer(app).listen(3300, ()=> {
     console.log(`Server Listening...`);
