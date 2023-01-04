@@ -11,11 +11,11 @@ npm i pm2
 
 ```js
 module.exports = {
-  apps: [{
+  apps: [{ // apps은 고정
     name: 'app',
     script: './app.js',
     instances: 0, //instance 항목값을 '0'으로 설정하면 CPU 코어 수 만큼 프로세스를 생성하겠다는 뜻
-    exec_mode: ‘cluster’
+    exec_mode: 'cluster'
   }]
 }
 ```
