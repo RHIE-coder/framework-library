@@ -10,11 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@flagtail/jsconfig-alias-mapper": "^0.2.0",
-<<<<<<< HEAD
-    "@flagtail/type-flow": "^0.1.0",
-=======
     "@flagtail/type-flow": "^0.1.2",
->>>>>>> 7463c7b32c673c975cab8d8ca96643f335573c93
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "ejs": "^3.1.8",
