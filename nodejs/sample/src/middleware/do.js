@@ -5,6 +5,3 @@ const target = {
 
 
 unknownUser => (authentication => knownUser) => authorizaion => target;
-
-
-
