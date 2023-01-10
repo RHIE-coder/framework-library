@@ -1,19 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-
-function Form() {
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log('You clicked submit.');
-  }
-
+function Blog(props) {
+  const sidebar = (
+    <ul>
+      {props.posts.map((post) =>
+        <li key={post.id}>
+          {post.title}
+        </li>
+      )}
+    </ul>
+  );
+  const content = props.posts.map((post) =>
+    <div key={post.id}>
+      <h3>{post.title}</h3>
+      <p>{post.content}</p>
+    </div>
+  );
   return (
-    <form onSubmit={handleSubmit}>
-      <button type="submit">Submit</button>
-    </form>
+    <div>
+      {sidebar}
+      <hr />
+      {content}
+    </div>
   );
 }
 
-root.render(<Form />)
+const posts = [
+  {id: 1, title: 'Hello World', content: 'Welcome to learning React!'},
+  {id: 2, title: 'Installation', content: 'You can install React from npm.'}
+];
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Blog posts={posts} />);

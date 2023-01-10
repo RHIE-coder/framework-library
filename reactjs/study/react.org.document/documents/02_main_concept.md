@@ -260,3 +260,182 @@ function Form() {
   );
 }
 ```
+
+이벤트 핸들러에 인자 전달(feat. `this`)
+
+```js
+<button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button>
+<button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
+```
+
+# 07. 조건부 렌더링
+
+ - 컴포넌트의 render 메서드로부터 null을 반환하는 것은 생명주기 메서드 호출에 영향을 주지 않음. 계속 호출되는 componentDidUpdate가 그 증거!
+
+```js
+function WarningBanner(props) {
+  if (!props.warn) {
+    return null;
+  }
+
+  return (
+    <div className="warning">
+      Warning!
+    </div>
+  );
+}
+
+class Page extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {showWarning: true};
+    this.handleToggleClick = this.handleToggleClick.bind(this);
+  }
+
+  componentDidUpdate() {
+    console.log("componentDidUpdate")
+  }
+
+  handleToggleClick() {
+    this.setState(state => ({
+      showWarning: !state.showWarning
+    }));
+  }
+
+  render() {
+    return (
+      <div>
+        <WarningBanner warn={this.state.showWarning} />
+        <button onClick={this.handleToggleClick}>
+          {this.state.showWarning ? 'Hide' : 'Show'}
+        </button>
+      </div>
+    );
+  }
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root')); 
+root.render(<Page />);
+```
+
+# 08. 리스트와 Key
+
+`key`는 엘리먼트 리스트를 만들 때 포함해야 하는 특수한 문자열 어트리뷰트
+
+ - Key는 React가 어떤 항목을 변경, 추가 또는 삭제할지 식별하는 것을 돕습니다. key는 엘리먼트에 안정적인 고유성을 부여하기 위해 배열 내부의 엘리먼트에 지정해야 합니다.
+ - Key를 선택하는 가장 좋은 방법은 리스트의 다른 항목들 사이에서 해당 항목을 고유하게 식별할 수 있는 문자열을 사용
+ - 렌더링 한 항목에 대한 안정적인 ID가 없다면 최후의 수단으로 항목의 인덱스를 key로 사용
+
+```js
+function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) =>
+    <li>{number}</li>
+  );
+  return (
+    <ul>{listItems}</ul>
+  );
+}
+
+const numbers = [1, 2, 3, 4, 5];
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<NumberList numbers={numbers} />);
+```
+
+올바른 Key 사용법
+
+```js
+function ListItem(props) {
+  // 틀렸습니다! 여기에는 key를 지정할 필요가 없습니다.
+  // <li key={value.toString()}>
+  //     {value}
+  // </li>
+  // 맞습니다! 여기에는 key를 지정할 필요가 없습니다.
+  return <li>{props.value}</li>;
+}
+
+function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) =>
+    // 틀렸습니다! 여기에 key를 지정해야 합니다.
+    // <ListItem value={number} />
+    // 맞습니다! 배열 안에 key를 지정해야 합니다.
+    <ListItem key={number.toString()} value={number} />
+  );
+  return (
+    <ul>
+      {listItems}
+    </ul>
+  );
+}
+```
+
+Key는 형제 사이에서만 고유한 값이어야 한다.
+
+ - Key는 배열 안에서 형제 사이에서 고유해야 하고 전체 범위에서 고유할 필요는 없습니다. 두 개의 다른 배열을 만들 때 동일한 key를 사용할 수 있습니다.
+
+```js
+function Blog(props) {
+  const sidebar = (
+    <ul>
+      {props.posts.map((post) =>
+        <li key={post.id}>
+          {post.title}
+        </li>
+      )}
+    </ul>
+  );
+  const content = props.posts.map((post) =>
+    <div key={post.id}>
+      <h3>{post.title}</h3>
+      <p>{post.content}</p>
+    </div>
+  );
+  return (
+    <div>
+      {sidebar}
+      <hr />
+      {content}
+    </div>
+  );
+}
+
+const posts = [
+  {id: 1, title: 'Hello World', content: 'Welcome to learning React!'},
+  {id: 2, title: 'Installation', content: 'You can install React from npm.'}
+];
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Blog posts={posts} />);
+```
+
+`map()`을 이용한 엘리먼트 리스팅
+
+```js
+function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) =>
+    <ListItem key={number.toString()}
+              value={number} />
+  );
+  return (
+    <ul>
+      {listItems}
+    </ul>
+  );
+}
+
+// OR
+
+function NumberList(props) {
+  const numbers = props.numbers;
+  return (
+    <ul>
+      {numbers.map((number) =>
+        <ListItem key={number.toString()}
+                  value={number} />
+      )}
+    </ul>
+  );
+}
+```
