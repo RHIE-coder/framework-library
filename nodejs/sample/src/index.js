@@ -1,1 +1,1 @@
-module.exports = target => require('path').join(__dirname, target);
+module.exports = target => target ? require('path').join(__dirname, target) : __dirname;
