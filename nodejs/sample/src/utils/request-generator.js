@@ -18,8 +18,23 @@ class RequestGenerator {
         return this;
     }
 
-    url(url) {
+    url(url, query) {
         this.#reqData.url = url;
+
+        if(query) {
+            const queryStrings = [];
+
+            for(const item of Object.entries(query)) {
+                queryStrings.push(item.join("="))
+            }
+
+            const queryString = queryStrings.length === 0
+                                ? ''
+                                : '?' + queryStrings.join("&");
+
+            this.#reqData.url = this.#reqData.url + queryString;
+        }
+
         return this;
     }
 
