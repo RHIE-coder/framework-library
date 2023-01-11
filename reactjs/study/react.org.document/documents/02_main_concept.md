@@ -574,54 +574,255 @@ class FlavorForm extends React.Component {
 
 file input 태그
 
+ - HTML에서 `<input type="file">`는 사용자가 하나 이상의 파일을 자신의 장치 저장소에서 서버로 업로드하거나 File API를 통해 JavaScript로 조작할 수 있습니다. 값이 읽기 전용이기 때문에 React에서는 비제어 컴포넌트입니다.
+
 ```js
 <input type="file" />
 ```
 
 ```js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+
 class Reservation extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isGoing: true,
-      numberOfGuests: 2
-    };
+    constructor(props) {
+        super(props);
 
-    this.handleInputChange = this.handleInputChange.bind(this);
+        this.state = {
+            isGoing: true,
+            numberOfGuests: 2,
+        }
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value,
+        })
+    }
+
+    render() {
+        return (
+            <form>
+                <label>
+                    Is going:
+                    <input 
+                        name="isGoing"
+                        type="checkbox"
+                        checked={this.state.isGoing}
+                        onChange={this.handleInputChange}
+                    />
+                </label>
+                <label>
+                    Number of guests:
+                    <input 
+                        name="numberOfGuests"
+                        type="number"
+                        value={this.state.numberOfGuests}
+                        onChange={this.handleInputChange} 
+                    />
+                </label>
+            </form>
+        )
+    }
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Reservation />)
+```
+
+# 10. State 끌어올리기
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+
+function BoilingVerdict(props) {
+    if(props.celsius >= 100) {
+        return <p>The water would boil.</p>;
+    }
+
+    return <p>The water would not boil.</p>
+}
+
+class Calculator extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this); 
+        this.state = {temperature: ''};
+    }
+
+    handleChange(e) {
+        this.setState({temperature: e.target.value});
+    }
+
+    render() {
+        const temperature = this.state.temperature;
+        return (
+            <fieldset>
+                <legend>Enter temperature in Celisius</legend>
+                <input
+                    value={temperature}
+                    onChange={this.handleChange}
+                />
+                <BoilingVerdict
+                    celsius={parseFloat(temperature)}
+                />
+            </fieldset>
+        )
+    }
+}
+
+const scaleNames = {
+    c: 'Celsius',
+    f: 'Fahrenheit',
+}
+
+class TemperatureInput extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.state = {temperature: ''};
+    }
+
+    handleChange(e) {
+        // this.setState({temperature: e.target.value});
+        this.props.onTemperatureChange(e.target.value);
+    }
+
+    render() {
+        // const temperature = this.state.temperature;
+        const temperature = this.props.temperature;
+        const scale = this.props.scale;
+        return (
+            <fieldset>
+                <legend>Enter temperature in {scaleNames[scale]}:</legend>
+                <input 
+                    value={temperature}
+                    onChange={this.handleChange}
+                />
+            </fieldset>
+        )
+    }
+}
+
+class Calculator2 extends React.Component {
+    
+    render() {
+        return (
+            <div>
+                <TemperatureInput scale="c" />
+                <TemperatureInput scale="f" />
+            </div>
+        )
+    }
+}
+
+function toCelsius(fahrenheit) {
+    return (fahrenheit - 32) * 5 / 9;
+}
+
+function toFahrenheit(celsius) {
+    return (celsius * 9 / 5) + 32;
+}
+
+function tryConvert(temperature, convert) {
+  const input = parseFloat(temperature);
+  if (Number.isNaN(input)) {
+    return '';
   }
+  const output = convert(input);
+  const rounded = Math.round(output * 1000) / 1000;
+  return rounded.toString();
+}
 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
+class Calculator3 extends React.Component {
+    
+    constructor(props) {
+        super(props);
+        this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
+        this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);       
+        this.state = {temperature:'', scale:'c'};
+    }
 
-    this.setState({
-      [name]: value
-    });
-  }
+    handleCelsiusChange(temperature) {
+        this.setState({scale: 'c', temperature});
+    }
 
-  render() {
-    return (
-      <form>
-        <label>
-          Is going:
-          <input
-            name="isGoing"
-            type="checkbox"
-            checked={this.state.isGoing}
-            onChange={this.handleInputChange} />
-        </label>
-        <br />
-        <label>
-          Number of guests:
-          <input
-            name="numberOfGuests"
-            type="number"
-            value={this.state.numberOfGuests}
-            onChange={this.handleInputChange} />
-        </label>
-      </form>
-    );
-  }
+    handleFahrenheitChange(temperature) {
+        this.setState({scale: 'f', temperature});
+    }
+
+    render() {
+        const scale = this.state.scale;
+        const temperature = this.state.temperature;
+        const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
+        const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+
+        return (
+            <div>
+                <TemperatureInput
+                    scale="c"
+                    temperature={celsius}
+                    onTemperatureChange={this.handleCelsiusChange} />
+                <TemperatureInput
+                    scale="f"
+                    temperature={fahrenheit}
+                    onTemperatureChange={this.handleFahrenheitChange} />
+                <BoilingVerdict
+                    celsius={parseFloat(celsius)} />
+            </div>
+        )
+    }
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Calculator3 />)
+```
+
+# 11. Composition vs Inheritance
+
+```
+Facebook에서는 수천 개의 React 컴포넌트를 사용하지만, 
+컴포넌트를 상속 계층 구조로 작성을 권장할만한 사례를 아직 찾지 못했습니다.
+```
+
+어떤 형태의 자식 컴포넌트가 올 지 예상하기 힘들 때 비워놓기
+ - props에 컴포넌트를 전달받아 처리할 수 있다는 점을 이용
+
+
+```js
+function SplitPane(props) {
+  return (
+    <div className="SplitPane">
+      <div className="SplitPane-left">
+        {props.left}
+      </div>
+      <div className="SplitPane-right">
+        {props.right}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <SplitPane
+      left={
+        <Contacts />
+      }
+      right={
+        <Chat />
+      } />
+  );
 }
 ```
+
+# 12. React로 생각하기
+
+ - 핵심: 최소 단위를 찾아내라
