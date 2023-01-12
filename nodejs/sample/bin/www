@@ -1,8 +1,20 @@
-console.log(require('@flagtail/jsconfig-alias-mapper')());
-process.env.PROJECT_ROOT_PATH = require('path').resolve();
-const applicationConfig = require("@/config/application")
-require(applicationConfig.protocol)
+require('@flagtail/jsconfig-alias-mapper')();
+
+const mode = process.env.NODE_ENV || 'development';
+
+require('dotenv').config();
+
+require('dotenv').config({
+    path: require('@/utils/path-builder').fromRoot(`.env.${mode}`)
+})
+
+const {
+    protocol,
+    port,
+} = require("@/config/application")
+
+require(protocol)
     .createServer(require("@/app"))
-    .listen(applicationConfig.port, ()=> {
+    .listen(port, ()=> {
         console.log(`Server Listening...`);
     })

@@ -2,7 +2,7 @@
   "name": "sample",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nodemon -w \"./**/*\" -x \"node ./bin/www\""
+    "dev": "NODE_ENV=development nodemon -w \"./**/*\" -x \"node ./bin/www\""
   },
   "keywords": [],
   "author": "",

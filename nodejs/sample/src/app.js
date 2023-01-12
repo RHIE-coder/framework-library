@@ -1,22 +1,18 @@
 const express = require('express');
 const app = express();
 
-require('dotenv').config({
-    path: process.env.PROJECT_ROOT_PATH + "/.env.development",
-})
-
-app.use('/public', express.static(require('@/')("public")))
+app.use('/public', express.static(require('@/utils/path-builder').fromApp("public")))
 
 app.set('view-engine', 'html');
 app.engine('html', require('ejs').renderFile);
-app.set('views', require("@/")("views"));
+app.set('views', require("@/utils/path-builder").fromApp("views"));
 
 app.use(require('cors')());
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(require('cookie-parser')());
 app.use(require('express-session')({
-    secret: 'my-secret-key',
+    secret: process.env.SESSION_SECRET_KEY,
     resave: true,
     saveUninitialized: false,
 }));
@@ -29,7 +25,7 @@ app.use(
 app.use("/", 
     require("@/loader/routes")({
         moduleName: "express",
-        routeFiles: require("@/")("routes"),
+        routeFiles: require("@/utils/path-builder").fromApp("routes"),
         method:'@',
         delimiter: '-',
         param: '#',
