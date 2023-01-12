@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 
+require('dotenv').config({
+    path: process.env.PROJECT_ROOT_PATH + "/.env.development",
+})
+
 app.use('/public', express.static(require('@/')("public")))
 
 app.set('view-engine', 'html');

@@ -4,8 +4,9 @@ module.exports = {
         username: process.env.MONGODB_USERNAME,
         password: process.env.MONGODB_PASSWORD,
     },
-    ip: "172.18.45.173",
-    port: 27017,
+    ip: process.env.MONGODB_IP || 'localhost',
+    port: process.env.MONGODB_PORT || 27017,
+
     connectionOptions: {
         maxPoolSize: 20,
     },

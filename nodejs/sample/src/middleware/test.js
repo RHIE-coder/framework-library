@@ -63,3 +63,5 @@ app.put('/posts/:id', checkAuth, checkPermission('update'), checkScope('posts'),
 app.delete('/posts/:id', checkAuth, checkPermission('delete'), checkScope('posts'), (req, res) => {
     // Delete a post
 });
+
+app.listen(3333)

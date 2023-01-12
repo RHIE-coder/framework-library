@@ -1,6 +1,6 @@
-require('@flagtail/jsconfig-alias-mapper')();
+console.log(require('@flagtail/jsconfig-alias-mapper')());
+process.env.PROJECT_ROOT_PATH = require('path').resolve();
 const applicationConfig = require("@/config/application")
-
 require(applicationConfig.protocol)
     .createServer(require("@/app"))
     .listen(applicationConfig.port, ()=> {

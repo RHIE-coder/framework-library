@@ -1,1 +1,5 @@
-console.log(process.env.NODE_ENV)
+function test({a, b, c}) {
+    console.log(a, b, c);
+}
+
+test(10, 20)

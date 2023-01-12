@@ -1,1 +1,4 @@
-module.exports = target => target ? require('path').join(__dirname, target) : __dirname;
+const path = require('path'); 
+module.exports = () =>{
+    
+}

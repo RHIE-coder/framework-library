@@ -16,5 +16,5 @@ class ResponseMessage {
 }
 
 module.exports = {
-    ResponseMessage,
+  ResponseMessage,
 }
