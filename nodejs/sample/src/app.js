@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-app.use('/public', express.static(require('@/utils/path-builder').fromApp("public")))
+app.use('/public', express.static(require('@/utils/path-builder').fromApp("public")));
 
 app.set('view-engine', 'html');
 app.engine('html', require('ejs').renderFile);
