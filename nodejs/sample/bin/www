@@ -1,20 +1,28 @@
 require('@flagtail/jsconfig-alias-mapper')();
-
 const mode = process.env.NODE_ENV || 'development';
 
-require('dotenv').config();
-
-require('dotenv').config({
+const dotenv = require('dotenv');
+dotenv.config();
+dotenv.config({
     path: require('@/utils/path-builder').fromRoot(`.env.${mode}`)
-})
+});
 
 const {
     protocol,
+    credential,
     port,
 } = require("@/config/application")
 
+const serverInputs = [];
+
+if (protocol === 'https') {
+    serverInputs.push(credential);
+}
+
+serverInputs.push(require("@/app"));
+
 require(protocol)
-    .createServer(require("@/app"))
+    .createServer(...serverInputs)
     .listen(port, ()=> {
         console.log(`Server Listening...`);
     })
