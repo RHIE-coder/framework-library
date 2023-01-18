@@ -8,13 +8,16 @@ const MyContext = React.createContext({
 
 class App extends React.Component {
     render() {
+        // return (
+        //     <MyContext.Provider value={{
+        //         user: 'alice',
+        //         age: 22,
+        //     }}>
+        //         <UserInfo />
+        //     </MyContext.Provider>
+        // )
         return (
-            <MyContext.Provider value={{
-                user: 'alice',
-                age: 22,
-            }}>
-                <UserInfo />
-            </MyContext.Provider>
+            <h1>{this.props.name}</h1>
         )
     }
 }
@@ -35,5 +38,5 @@ class UserInfo extends React.Component {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <App />
+    <App name="rhie" />
 )
