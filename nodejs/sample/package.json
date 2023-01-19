@@ -10,6 +10,7 @@
   "dependencies": {
     "@flagtail/jsconfig-alias-mapper": "^0.2.0",
     "@flagtail/type-flow": "^0.1.2",
+    "axios": "^1.2.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

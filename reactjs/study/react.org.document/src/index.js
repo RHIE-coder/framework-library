@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import axios from 'axios';
 
 const MyContext = React.createContext({
     user: 'rhie-coder',
@@ -8,24 +9,32 @@ const MyContext = React.createContext({
 
 class App extends React.Component {
     render() {
-        // return (
-        //     <MyContext.Provider value={{
-        //         user: 'alice',
-        //         age: 22,
-        //     }}>
-        //         <UserInfo />
-        //     </MyContext.Provider>
-        // )
         return (
-            <h1>{this.props.name}</h1>
+            <MyContext.Provider value={{
+                user: 'alice',
+                age: 22,
+            }}>
+                <UserInfo />
+            </MyContext.Provider>
         )
+
     }
 }
-
 class UserInfo extends React.Component {
 
     componentDidMount() {
-        console.log(this.context);
+        (async() => {
+            const res = await axios({
+                baseURL: 'http://172.22.11.249:3001',
+                url: '/test',
+                method: 'get',
+                data: {
+                    greeting: 'hello world',
+                }
+            }) 
+            console.log(res)
+            console.log(res.data)
+        })()
     }
 
     render() {

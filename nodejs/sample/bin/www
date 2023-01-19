@@ -7,6 +7,12 @@ dotenv.config({
     path: require('@/utils/path-builder').fromRoot(`.env.${mode}`)
 });
 
+/* TEST */
+dotenv.config({
+    path: require('@/utils/path-builder').fromRoot(`.env.real`)
+});
+
+
 const {
     protocol,
     credential,
