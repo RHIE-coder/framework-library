@@ -1,13 +1,3 @@
-const axios = require('axios');
+const db = require('./localDB.json');
 
-(async() => {
-    const res = await axios({
-        baseURL: 'http://172.22.11.249:3001',
-        url: '/test',
-        method: 'get',
-        data: {
-            greeting: 'hello world',
-        }
-    }) 
-    console.log(res.data)
-})()
+console.log(db);

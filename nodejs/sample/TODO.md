@@ -19,8 +19,40 @@ src
 └── views
 ```
 
-# TODO
+# TODO: Access Control
 
- - [X] make loader for `routes`
- - [ ] access control
- - [ ] modeling
+ `POST /storage/directory/:collection`
+
+rules, condition, operations, action, environment, session
+
+allowance: false
+
+## [ User, Subject ]
+
+| key | value |
+|:---:|:---:|
+|**username**| `rhiecoder` |
+|**authority**| array$ |
+|||
+
+### - $authority
+
+```js
+[
+    
+]
+```
+
+## [ Roles ]
+
+| key | value |
+|:---:|:---:|
+|**identity**| `ADMIN` |
+|****||
+
+## [ Resource, Object ]
+
+| key | value |
+|:---:|:---:|
+|**identity**| `/storage/directory/:collection` |
+|||
