@@ -56,3 +56,9 @@ allowance: false
 |:---:|:---:|
 |**identity**| `/storage/directory/:collection` |
 |||
+
+
+----------------------------------
+
+
+
