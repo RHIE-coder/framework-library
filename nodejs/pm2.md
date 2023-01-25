@@ -23,6 +23,8 @@ module.exports = {
 ```bash
 npx pm2 start server.config.js # ecosystem.config.js (default)
 pm2 reload all # Zero Downtime Reload
+
+npx pm2 start npm --name "my-apps" -- run start
 ```
 
 ### - 조회 
