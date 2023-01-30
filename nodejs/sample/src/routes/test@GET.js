@@ -1,4 +1,7 @@
 module.exports.route = async (req, res) => {
-    console.log(res.body)
-    res.send(req.body)
+    const acceptHeader = req.headers.accept;
+    console.log(acceptHeader);
+    res.send({
+        greeting: "hello world",
+    })
 }
