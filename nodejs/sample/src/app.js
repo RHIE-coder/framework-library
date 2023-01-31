@@ -22,6 +22,8 @@ app.use(
     morgan(':remote-addr - :remote-user [:date] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms')
 );
 
+app.set("cbCount", 0);
+
 app.use("/", 
     require("@/loader/routes")({
         moduleName: "express",
