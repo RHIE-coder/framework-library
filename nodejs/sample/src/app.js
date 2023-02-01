@@ -23,6 +23,7 @@ app.use(
 );
 
 app.set("cbCount", 0);
+app.set("reqCount", 0);
 
 app.use("/", 
     require("@/loader/routes")({

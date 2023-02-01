@@ -1,16 +1,15 @@
 package main
 
-import (
-	"fmt"
-)
-
-const (
-	_ = iota + 20000
-	OOPS
-	E
-	F
-)
+import "fmt"
 
 func main() {
-	fmt.Println(OOPS)
+
+	var total int
+
+	result := func(nums ...int) {
+		for _, num := range nums {
+			total += num
+		}
+		fmt.Println(total)
+	}()
 }
