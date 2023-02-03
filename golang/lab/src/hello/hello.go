@@ -1,30 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
-type Rectangle struct {
-	width  int
-	height int
-}
+const (
+	a = 1
+	b = 2
+	c = 3
+	d = 4
+)
 
-func scaleOut(rect *Rectangle) {
-	rect.width *= 10
-	rect.height *= 10
-}
 func main() {
-	rect := Rectangle{2, 3}
-	rectPtr := &Rectangle{2, 3}
-	fmt.Println(rect)
-	fmt.Println(rectPtr)
-	scaleOut(&rect)
-	scaleOut(rectPtr)
-	fmt.Println(rect)
-	fmt.Println(rectPtr)
+	fmt.Println(a, b, c, d) //1 2 3 4
 }
-
-/*
-{2 3}
-&{2 3}
-{20 30}
-&{20 30}
-*/
