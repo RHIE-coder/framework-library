@@ -2,15 +2,31 @@ package main
 
 import (
 	"fmt"
-)
-
-const (
-	a = 1
-	b = 2
-	c = 3
-	d = 4
+	"runtime"
+	"time"
 )
 
 func main() {
-	fmt.Println(a, b, c, d) //1 2 3 4
+	runtime.GOMAXPROCS(runtime.NumCPU())
+
+	var data = []int{}
+
+	go func() {
+		for i := 0; i < 1000; i++ {
+			data = append(data, 1)
+
+			runtime.Gosched() // 다른 고루틴이 CPU를 사용할 수 있도록 양보
+		}
+	}()
+
+	go func() {
+		for i := 0; i < 1000; i++ {
+			data = append(data, 1)
+
+			runtime.Gosched()
+		}
+	}()
+
+	time.Sleep(2 * time.Second)
+	fmt.Println(len(data))
 }
