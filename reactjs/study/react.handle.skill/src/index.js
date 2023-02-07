@@ -1,22 +1,30 @@
-import React, {useReducer} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
-function reducer(state, action) {
-    console.log(action.type);
-    return { num: state.num + 1 }
-}
+const Home = React.lazy(()=>import("./pages/Home")) 
+const About = React.lazy(()=>import("./pages/About"))
+const Profile = React.lazy(()=>import("./pages/profile"))
 
-const Counter = () => {
-    const [state, dispatch] = useReducer(reducer, {num: 100})
+const App = () => {
 
     return (
         <React.Fragment>
-            <p>COUNT: {state.num}</p>
-            <button onClick={()=> dispatch({type: "something"})}>+</button>
+            <React.Suspense fallback={<div>wait plz</div>}>
+            <h1>Hello World</h1>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/profiles/:username" element={<Profile />} />
+            </Routes>
+            </React.Suspense>
         </React.Fragment>
     )
 }
 
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <Counter></Counter>
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
 )
