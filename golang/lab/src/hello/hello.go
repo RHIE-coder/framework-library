@@ -4,35 +4,39 @@ import (
 	"fmt"
 	"runtime"
 	"sync"
-	"time"
 )
 
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	var data = []int{}
 	var mutex = new(sync.Mutex)
+	var cond = sync.NewCond(mutex)
 
-	go func() {
-		for i := 0; i < 1000; i++ {
+	c := make(chan bool, 3)
+
+	for i := 0; i < 3; i++ {
+		go func(n int) {
 			mutex.Lock()
-			data = append(data, 1)
+			c <- true
+			fmt.Println("wait begin : ", n)
+			cond.Wait()
+			fmt.Println("wait end : ", n)
 			mutex.Unlock()
+		}(i)
+	}
 
-			runtime.Gosched() // 다른 고루틴이 CPU를 사용할 수 있도록 양보
-		}
-	}()
+	for i := 0; i < 3; i++ {
+		fmt.Println("read channel before")
+		fmt.Println(<-c) // 채널에서 값을 꺼냄, 고루틴 3개가 모두 실행될 때까지 기다림
+		fmt.Println("read channel after")
+	}
 
-	go func() {
-		for i := 0; i < 1000; i++ {
-			mutex.Lock()
-			data = append(data, 1)
-			mutex.Unlock()
+	for i := 0; i < 3; i++ {
+		mutex.Lock()
+		fmt.Println("signal : ", i)
+		cond.Signal()
+		mutex.Unlock()
+	}
 
-			runtime.Gosched()
-		}
-	}()
-
-	time.Sleep(2 * time.Second)
-	fmt.Println(len(data)) // 2000
+	fmt.Scanln()
 }
