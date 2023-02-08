@@ -25,14 +25,17 @@ app.use(
 app.set("cbCount", 0);
 app.set("reqCount", 0);
 
-app.use("/", 
-    require("@/loader/routes")({
+const router = require("@/loader/routes")({
         moduleName: "express",
         routeFiles: require("@/utils/path-builder").fromApp("routes"),
         method:'@',
-        delimiter: '-',
+        delimiter: '+',
         param: '#',
     })
-);
+
+
+app.use("/", router);
+
+
 
 module.exports = app;

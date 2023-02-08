@@ -9,8 +9,8 @@ import (
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	var mutex = new(sync.Mutex)
-	var cond = sync.NewCond(mutex)
+	mutex := new(sync.Mutex)
+	cond := sync.NewCond(mutex)
 
 	c := make(chan bool, 3)
 
@@ -18,25 +18,35 @@ func main() {
 		go func(n int) {
 			mutex.Lock()
 			c <- true
-			fmt.Println("wait begin : ", n)
+			fmt.Println("wait begin: ", n)
 			cond.Wait()
-			fmt.Println("wait end : ", n)
+			fmt.Println("wait end: ", n)
 			mutex.Unlock()
 		}(i)
 	}
 
 	for i := 0; i < 3; i++ {
-		fmt.Println("read channel before")
-		fmt.Println(<-c) // 채널에서 값을 꺼냄, 고루틴 3개가 모두 실행될 때까지 기다림
-		fmt.Println("read channel after")
+		fmt.Println("get channel value")
+		<-c
 	}
 
-	for i := 0; i < 3; i++ {
-		mutex.Lock()
-		fmt.Println("signal : ", i)
-		cond.Signal()
-		mutex.Unlock()
-	}
+	mutex.Lock()
+	fmt.Println("broadcast")
+	cond.Broadcast()
+	mutex.Unlock()
 
 	fmt.Scanln()
 }
+
+/*
+channel value input
+wait begin:  2
+channel value input
+wait begin:  0
+channel value input
+wait begin:  1
+broadcast
+wait end:  2
+wait end:  1
+wait end:  0
+*/
