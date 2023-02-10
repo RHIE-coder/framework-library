@@ -39,6 +39,4 @@ pragma solidity ^ 0.8.17;
         - constructor
         - receive / fallback
         - external / public / internal / private
-    
-        
 */
