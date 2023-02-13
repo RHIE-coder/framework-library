@@ -15,9 +15,8 @@ pragma solidity ^0.8.17;
     Enums: can be declared outside of a contract.
     Structs: can be declared outside of a contract and imported in another contract.
 
-    storage: 블록체인에 저장된 state 변수
-    memory: 함수가 불려지는 동안 메모리에 존재하는 변수(Mutable)
-    calldata: call data, 인자들이 포함된 데이터 공간(Immutable)
+    Reference Type 변수들은 Data Location을 명시해야 한다.
+
 */
 
 contract Variables {
@@ -52,9 +51,6 @@ contract Variables {
 
         todos.push(todo);
 
-        Todo[] memory arr;
-
-        arr.push(Todo(_text, true));
     }
 
     uint[] public arr;
