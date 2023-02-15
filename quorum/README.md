@@ -21,8 +21,6 @@ make all
 2. check `build/bin` directory when finish installation
 
 
-
-
 <hr><br><br><br><br>
 
 ## # Dev Tools 
