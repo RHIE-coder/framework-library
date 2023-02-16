@@ -1,4 +1,4 @@
-module rhie
+module rh
 
 go 1.18
 

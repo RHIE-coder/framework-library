@@ -7,8 +7,8 @@ import (
 	"github.com/rhie-coder/goproj/hello"
 	"github.com/rhie-coder/goproj/hello/section"
 
-	zed "rhie/mondo"
-	"rhie/mondo/bar"
+	zed "rh/mondo"
+	"rh/mondo/bar"
 )
 
 func main() {
