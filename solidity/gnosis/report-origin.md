@@ -179,65 +179,6 @@ GAS 소모 수치 상 실제로 적용하기 어려운 결과. 그래도 결과�
 
 <br><br><br>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ########################################
 
 | 항목 | 상세 |
@@ -284,3 +225,33 @@ GAS 소모 수치 상 실제로 적용하기 어려운 결과. 그래도 결과�
 |`GAS PRICE`|23.92420395 Gwei|
 |`GAS LIMIT`|104,825 / 103,706 (98.93%)|
  - 0x5f62aca302f0c2f315513c751e30417be3a7f0f034153406c36746782df91e33
+
+
+
+ - 새로운 Air
+
+0x0399902d320A8C2D98E57075a37E1A5F05326EE5
+
+0x77232F7DC25D988030CDE7e8F7e9a500Da9919D3
+
+0x9576aA567Ac1da39BdC1D4d0f8AAb615d59592E6
+
+ - Delegator
+
+0xC08964D89714BD6573321a9d1ca3c0Dc347f1aeC
+
+```sol
+    function bulkDelegateTransfer(address[] calldata _receivers, uint _amount) public {
+        IERC20 _token = token;
+        uint len = _receivers.length;
+
+        for(uint i = 0; i < len; ) {
+            _token.transfer(_receivers[i], _amount);
+            
+            unchecked {
+                ++i;
+            }
+        }
+    }
+```
+

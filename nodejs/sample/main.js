@@ -18,7 +18,7 @@ function generateAccount(prefix, num) {
 
     const accountMocks = [];
     
-    for(let i = 1; i <= 989; ++i) {
+    for(let i = 1; i <= 10; ++i) {
         accountMocks.push(generateAccount(prefix, i))        
     }
 

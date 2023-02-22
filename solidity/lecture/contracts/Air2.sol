@@ -4,8 +4,8 @@ pragma solidity ^0.8.0;
 // import "@openzeppelin/contracts@4.8.0/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol"; 
 
-contract TokensAirdrop {
-    string public _version = "0.0.3";
+contract TokensAirdrop33 {
+    string public _version = "0.0.1";
 
     IERC20 _erc20Token;
     mapping(address=>bool) public _permissions;
@@ -82,7 +82,7 @@ contract TokensAirdrop {
     *   @function   assembly_AirdropFixedAmount(address[] recipients, uint256 amount)
     *
     *******************************************************************************************/
-    function airdrop(address[] calldata recipients, uint256[] calldata amounts) public onlyPermissionedAddress{
+    function airdrop(address from, address[] calldata recipients, uint256[] calldata amounts) public onlyPermissionedAddress{
         uint256 len = recipients.length;
         require(len >= 0, "recipients list is empty");
         require(len == amounts.length, "length of recipients list and amount list should be equal");
@@ -90,14 +90,14 @@ contract TokensAirdrop {
         IERC20 token = _erc20Token;
 
         for (uint256 i = 0; i < len;) {
-            token.transferFrom(msg.sender, recipients[i], amounts[i]);
+            token.transferFrom(from, recipients[i], amounts[i]);
             unchecked {
                 ++i;
             }
         }
     }
 
-    function airdropFixedAmount(address[] calldata recipients, uint256 amount) public onlyPermissionedAddress{
+    function airdropFixedAmount(address from, address[] calldata recipients, uint256 amount) public onlyPermissionedAddress{
         uint256 len = recipients.length;
         require(len >= 0, "recipients list is empty");
         require(amount > 0, "amount shouild not be zero");
@@ -105,7 +105,7 @@ contract TokensAirdrop {
         IERC20 token = _erc20Token;
 
         for (uint256 i = 0; i < len;) {
-            token.transferFrom(msg.sender, recipients[i], amount);
+            token.transferFrom(from, recipients[i], amount);
             unchecked {
                 ++i;
             }
@@ -118,7 +118,7 @@ contract TokensAirdrop {
     *   below : inline assembly
     *    
     *******************************************************************************************/
-    function assembly_Airdrop(address[] calldata recipients, uint256[] calldata amounts) public onlyPermissionedAddress{
+    function assembly_Airdrop(address from, address[] calldata recipients, uint256[] calldata amounts) public onlyPermissionedAddress{
         uint256 len = recipients.length;
         require(len >= 0, "recipients list is empty");
 
@@ -135,7 +135,7 @@ contract TokensAirdrop {
                 let params := mload(0x40)
                 mstore(0x40, add(params, 0x64))
                 mstore(params, fnSig)
-                mstore(add(params, 0x4), caller())
+                mstore(add(params, 0x4), from)
                 mstore(add(params, 0x24), recipient)
                 mstore(add(params, 0x44), amount)
 
@@ -147,7 +147,7 @@ contract TokensAirdrop {
         }
     }
     
-    function assembly_AirdropFixedAmount(address[] calldata recipients, uint256 amount) public onlyPermissionedAddress{
+    function assembly_AirdropFixedAmount(address from, address[] calldata recipients, uint256 amount) public onlyPermissionedAddress{
         uint256 len = recipients.length;
         require(len >= 0, "recipients list is empty");
 
@@ -163,7 +163,7 @@ contract TokensAirdrop {
                 let params := mload(0x40)
                 mstore(0x40, add(params, 0x64))
                 mstore(params, fnSig)
-                mstore(add(params, 0x4), caller())
+                mstore(add(params, 0x4), from)
                 mstore(add(params, 0x24), recipient)
                 mstore(add(params, 0x44), amount)
 

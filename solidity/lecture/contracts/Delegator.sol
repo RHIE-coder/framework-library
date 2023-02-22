@@ -128,6 +128,21 @@ contract Delegator {
         }
     }
 
+    event Sender(address sender);
+
+    function bulkDelegateTransfer(address _contract, address[] calldata _receivers, uint _amount) public {
+        IERC20 _token = token;
+        uint len = _receivers.length;
+        emit Sender(msg.sender);
+        for(uint i = 0; i < len; ) {
+            _contract.delegatecall(abi.encodeWithSignature("transfer(address,uint256)", _receivers[i], _amount));
+            
+            unchecked {
+                ++i;
+            }
+        }
+    }
+
     // 5. Assembly Code
     function bulkTransferFromStep6(address _from, address[] calldata _receivers, uint _amount) public {
         /*  
@@ -135,4 +150,7 @@ contract Delegator {
         */
         revert("not yet implements");
     }
+}
+
+contract CALLER {
 }
