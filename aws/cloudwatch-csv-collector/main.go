@@ -27,7 +27,14 @@ func logMessageParse(logMsg string) []string {
 	return []string{deviceId, address, localDateTime}
 }
 
+func beforeHook() {
+	startDateTime := time.Now().Unix()
+	fmt.Println(startDateTime)
+	os.Exit(2)
+}
+
 func main() {
+	beforeHook()
 	var err error
 
 	err = godotenv.Load()
