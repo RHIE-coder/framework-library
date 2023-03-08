@@ -66,6 +66,7 @@ func (cw *CloudWatch) GetAllLogs(logGroupName string, filterPattern string, acti
 		}
 
 		nextToken = output.NextToken
+		log.Println(nextToken) //test
 	}
 
 	return messages

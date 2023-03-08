@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"regexp"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -13,8 +16,18 @@ import (
 	timeUtils "cloudwatchCsvCollector/libs/time-utils"
 )
 
+func logMessageParse(logMsg string) []string {
+	deviceIdExpression, _ := regexp.Compile("device-id: [a-zA-Z0-9-]*")
+	addressExpression, _ := regexp.Compile("address: [a-zA-Z0-9]*")
+	timestampString := strings.Split(logMsg, "||")[0]
+	timestamp, _ := strconv.ParseInt(timestampString, 10, 64)
+	localDateTime := timeUtils.TimestampToLocation(timestamp, "Asia/Seoul").Format(timeUtils.DateTime)
+	deviceId := strings.Split(deviceIdExpression.FindString(logMsg), ": ")[1]
+	address := strings.Split(addressExpression.FindString(logMsg), ": ")[1]
+	return []string{deviceId, address, localDateTime}
+}
+
 func main() {
-	// beforeHook2()
 	var err error
 
 	err = godotenv.Load()
@@ -36,28 +49,16 @@ func main() {
 	fmt.Println("Retrieving log data for log group: ", CLOUDWATCH_LOG_GROUP_NAME)
 
 	logResults := cw.GetAllLogs(CLOUDWATCH_LOG_GROUP_NAME, FILTER_PATTERN, func(cwof cloudWatch.CloudWatchLogOutputFormat) string {
-		return fmt.Sprintf("%d, %s", cwof.Timestamp, cwof.Message)
+		return fmt.Sprintf("%d||%s", cwof.Timestamp, cwof.Message)
 	})
 	unixTimestamp := time.Now()
 	localDateTime := timeUtils.TimestampToLocation(unixTimestamp.Unix(), "Asia/Seoul")
 	dateString := localDateTime.Format(timeUtils.DateOnly)
 	csvHandler := csvUtils.CSVHandler{}
 	csvHandler.CreateCSVFile(BASE_CSV_NAME + dateString + ".csv")
-	csvHandler.Write([]string{"datetime", "device-id", "address"})
+	csvHandler.Write([]string{"device-id", "address", "datetime"})
 	for _, logMsg := range logResults {
-		fmt.Println(logMsg)
-		return
-		// requiredMessageSection := strings.Split(logMsg, "[CSVInfo]")
-		// splitedMessage := strings.Split(requiredMessageSection[1], ",")
-		// for idx, msg := range splitedMessage {
-		// 	splitedMessage[idx] = strings.Trim(strings.Split(msg, ":")[1], " ")
-		// }
-		// csvHandler.Write(splitedMessage)
+		csvHandler.Write(logMessageParse(logMsg))
 	}
 	csvHandler.Close()
-
-	// 	var message *string
-	// 	message = new(string)
-	// 	*message = "Mar  7 05:25:19 ip-172-31-0-107 web: 2023/03/07 05:25:19 [CSVInfo] device-id: 998a8ee2-a2ec-4dc0-9585-08ac12fa6644, address: 0x2L55WddXyl4it6MdDXOmXMleNTdPKZ1YnXvky87B"
-
 }
