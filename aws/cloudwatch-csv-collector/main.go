@@ -28,8 +28,14 @@ func logMessageParse(logMsg string) []string {
 }
 
 func beforeHook() {
-	startDateTime := time.Now().Unix()
-	fmt.Println(startDateTime)
+	startDateTime := "2023-03-09 00:00:00"
+	endDateTime := "2023-03-09 23:59:59"
+	start, err1 := time.Parse(timeUtils.DateTime, startDateTime)
+	end, err2 := time.Parse(timeUtils.DateTime, endDateTime)
+	fmt.Println(err1)
+	fmt.Println(err2)
+	fmt.Println(start.UnixMilli())
+	fmt.Println(end.UnixMilli())
 	os.Exit(2)
 }
 
@@ -58,9 +64,10 @@ func main() {
 	logResults := cw.GetAllLogs(CLOUDWATCH_LOG_GROUP_NAME, FILTER_PATTERN, func(cwof cloudWatch.CloudWatchLogOutputFormat) string {
 		return fmt.Sprintf("%d||%s", cwof.Timestamp, cwof.Message)
 	})
-	unixTimestamp := time.Now()
-	localDateTime := timeUtils.TimestampToLocation(unixTimestamp.Unix(), "Asia/Seoul")
-	dateString := localDateTime.Format(timeUtils.DateOnly)
+	// unixTimestamp := time.Now()
+	// localDateTime := timeUtils.TimestampToLocation(unixTimestamp.Unix(), "Asia/Seoul")
+	// dateString := localDateTime.Format(timeUtils.DateOnly)
+	dateString := "2023-03-000"
 	csvHandler := csvUtils.CSVHandler{}
 	csvHandler.CreateCSVFile(BASE_CSV_NAME + dateString + ".csv")
 	csvHandler.Write([]string{"device-id", "address", "datetime"})
