@@ -40,7 +40,7 @@ func beforeHook() {
 }
 
 func main() {
-	beforeHook()
+	// beforeHook()
 	var err error
 
 	err = godotenv.Load()
@@ -67,7 +67,7 @@ func main() {
 	// unixTimestamp := time.Now()
 	// localDateTime := timeUtils.TimestampToLocation(unixTimestamp.Unix(), "Asia/Seoul")
 	// dateString := localDateTime.Format(timeUtils.DateOnly)
-	dateString := "2023-03-000"
+	dateString := "2023-03-14"
 	csvHandler := csvUtils.CSVHandler{}
 	csvHandler.CreateCSVFile(BASE_CSV_NAME + dateString + ".csv")
 	csvHandler.Write([]string{"device-id", "address", "datetime"})

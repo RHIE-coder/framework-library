@@ -38,11 +38,11 @@ func (cw *CloudWatch) NewClient(accessKey string, secretKey string, regionName s
 
 func (cw *CloudWatch) GetAllLogs(logGroupName string, filterPattern string, action func(cwof CloudWatchLogOutputFormat) string) []string {
 
-	var start int64
-	var end int64
+	// var start int64
+	// var end int64
 
-	start = 1678320000000
-	end = 1678406399999
+	// start = 1678320000000
+	// end = 1678406399999
 
 	var nextToken *string
 	messages := []string{}
@@ -51,8 +51,8 @@ func (cw *CloudWatch) GetAllLogs(logGroupName string, filterPattern string, acti
 			LogGroupName:  &logGroupName,
 			FilterPattern: &filterPattern,
 			NextToken:     nextToken,
-			StartTime:     &start,
-			EndTime:       &end,
+			// StartTime:     &start,
+			// EndTime:       &end,
 		})
 
 		if err != nil {

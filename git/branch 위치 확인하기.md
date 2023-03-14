@@ -18,3 +18,9 @@ git rev-parse topic1
 ```
 git log HEAD..origin/master
 ```
+
+ 4. 단순하게
+
+```
+git log --oneline --branches --graph
+```
