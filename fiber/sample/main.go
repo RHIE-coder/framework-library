@@ -7,21 +7,49 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/basicauth"
+	"github.com/gofiber/fiber/v2/middleware/cache"
+	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 var exNum int = 0
 
 func main() {
+
 	var num int = 0 // 주의, preforking 시 데이터가 맞지 않을 수 있음!
 	fmt.Println(runtime.NumCPU())
 	app := fiber.New(fiber.Config{
-		Prefork: true,
+		// Prefork: true,
 	})
+	// app.Use(cache.New(cache.Config{
+	// 	// CacheControl:         true,
+	// 	Methods: []string{fiber.MethodGet, fiber.MethodPost, fiber.MethodHead},
+	// 	// StoreResponseHeaders: true,
+	// }))
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:4000",
+		AllowMethods: "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
+	}))
+	app.Use(cache.New(cache.Config{
+		// CacheControl:         true,
+		Methods: []string{fiber.MethodGet, fiber.MethodPost, fiber.MethodHead},
+		// StoreResponseHeaders: true,
+		Expiration: 5 * time.Second,
+	}))
+
 	app.Use("/", func(c *fiber.Ctx) error {
 		log.Println("M/W")
 		log.Println(c)
 		return c.Next()
 	})
+
+	app.Use(compress.New(compress.Config{
+		Next: func(c *fiber.Ctx) bool {
+			return c.Path() == "/dont_compress"
+		},
+		Level: compress.LevelBestSpeed, // 1
+	}))
 
 	app.Get("/1", func(c *fiber.Ctx) error {
 		num++
@@ -95,26 +123,66 @@ func main() {
 		return nil
 	})
 
-	app.Post("/7", func(c *fiber.Ctx) error {
-
+	app.Get("/7", func(c *fiber.Ctx) error {
+		time.Sleep(3 * time.Second)
 		type Sample struct {
 			A string `json:"username"`
-			b string `json:"password"`
+			B string `json:"password"`
 		}
 
 		return c.JSON(&Sample{
 			A: "hello",
-			b: "world",
+			B: "world",
 		})
 	})
 
-	app.Get("/8", func(c *fiber.Ctx) error {
+	app.Post("/8", func(c *fiber.Ctx) error {
 		exNum++
-		time.Sleep(3 * time.Second)
+		time.Sleep(1 * time.Second)
 		log.Printf("Count In: %d\n", exNum)
 		return c.SendString(fmt.Sprintf("%d", exNum))
 	})
-	// fmt.Println(" --- static ---")
+
 	app.Static("/", "./public") // https://docs.gofiber.io/api/app
+	app.Use(basicauth.New(basicauth.Config{
+		// Next: func(c *fiber.Ctx) bool {
+		// 	fmt.Println("AUTH NEXT()")
+		// 	return false
+		// },
+		Users: map[string]string{
+			"admin": "123456",
+		},
+		Realm: "member",
+		Authorizer: func(user, pass string) bool {
+			fmt.Println(user, pass)
+			if user == "john" && pass == "doe" {
+				return true
+			}
+			if user == "admin" && pass == "123456" {
+				return true
+			}
+			return false
+		},
+		Unauthorized: func(c *fiber.Ctx) error {
+			fmt.Println("Unauthorized")
+			c.Status(fiber.StatusUnauthorized)
+			return c.JSON(map[string]string{
+				"status": "unauthorized",
+			})
+		},
+	}))
+
+	app.Post("/10", func(c *fiber.Ctx) error {
+		return c.SendString("User Data!")
+	})
+
+	app.Post("/12", func(c *fiber.Ctx) error {
+		// data, _ := json.MarshalIndent(c.Request(), "", "    ")
+		// c.Response().Header.Add("Cache-Time", "6000")
+		return c.SendString(fmt.Sprintf("%d", time.Now().UnixNano()))
+		// return c.SendString(fmt.Sprintf("%d", 100))
+	})
+
+	fmt.Println(" --- static ---")
 	app.Listen(":5000")
 }
