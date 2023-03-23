@@ -1,42 +1,75 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"log"
+	"os"
 	"runtime"
+	"runtime/debug"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/basicauth"
-	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/envvar"
+	"github.com/gofiber/fiber/v2/middleware/expvar"
+	"github.com/gofiber/fiber/v2/middleware/idempotency"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/monitor"
+	"github.com/gofiber/fiber/v2/middleware/pprof"
+	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/fiber/v2/middleware/requestid"
+	"github.com/gofiber/fiber/v2/middleware/skip"
 )
 
-var exNum int = 0
+func main2() {
+	app := fiber.New()
+
+	// Register pprof middleware
+	app.Use(pprof.New())
+
+	// Your application routes
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("Hello, World!")
+	})
+
+	// Start server
+	app.Listen(":5000")
+}
+
+var exNum int = 0 // 주의, preforking 시 데이터가 맞지 않을 수 있음!
 
 func main() {
-
-	var num int = 0 // 주의, preforking 시 데이터가 맞지 않을 수 있음!
-	fmt.Println(runtime.NumCPU())
+	var num int = 0               // 주의, preforking 시 데이터가 맞지 않을 수 있음!
+	fmt.Println(runtime.NumCPU()) //12
 	app := fiber.New(fiber.Config{
 		// Prefork: true,
 	})
+
+	app.Use(recover.New(recover.Config{
+		EnableStackTrace: true,
+		StackTraceHandler: func(c *fiber.Ctx, e interface{}) {
+			err := c.SendString("ERRRRRROOOOORRR: " + fmt.Sprintf("%+v", e))
+			log.Println("1111111111111")
+			log.Println(err)
+			log.Println("2222222222")
+			_, _ = os.Stderr.WriteString(fmt.Sprintf("panic: %v\n%s\n", e, debug.Stack())) //nolint:errcheck // This will never fail
+		},
+	}))
 	// app.Use(cache.New(cache.Config{
 	// 	// CacheControl:         true,
 	// 	Methods: []string{fiber.MethodGet, fiber.MethodPost, fiber.MethodHead},
 	// 	// StoreResponseHeaders: true,
 	// }))
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "http://localhost:4000",
-		AllowMethods: "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
+		AllowOrigins:  "http://localhost:4000",
+		AllowMethods:  "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
+		ExposeHeaders: "X-CSRF-Token", // 안먹힘
 	}))
-	app.Use(cache.New(cache.Config{
-		// CacheControl:         true,
-		Methods: []string{fiber.MethodGet, fiber.MethodPost, fiber.MethodHead},
-		// StoreResponseHeaders: true,
-		Expiration: 5 * time.Second,
-	}))
+	app.Use(pprof.New())
 
 	app.Use("/", func(c *fiber.Ctx) error {
 		log.Println("M/W")
@@ -50,7 +83,19 @@ func main() {
 		},
 		Level: compress.LevelBestSpeed, // 1
 	}))
-
+	// app.Use(filesystem.New(filesystem.Config{
+	// 	Root:   http.Dir("./"),
+	// 	Browse: true,
+	// }))
+	app.Use(idempotency.New(idempotency.Config{
+		Next: func(c *fiber.Ctx) bool {
+			// Skip middleware if the request was done using a safe HTTP method
+			fmt.Println(fiber.IsMethodSafe(c.Method()))
+			fmt.Println(fiber.IsMethodIdempotent(c.Method()))
+			return fiber.IsMethodSafe(c.Method())
+		},
+		Lifetime: 5 * time.Second,
+	}))
 	app.Get("/1", func(c *fiber.Ctx) error {
 		num++
 		log.Printf("Count In: %d\n", num)
@@ -145,10 +190,13 @@ func main() {
 
 	app.Static("/", "./public") // https://docs.gofiber.io/api/app
 	app.Use(basicauth.New(basicauth.Config{
-		// Next: func(c *fiber.Ctx) bool {
-		// 	fmt.Println("AUTH NEXT()")
-		// 	return false
-		// },
+		Next: func(c *fiber.Ctx) bool {
+			return (c.Path() == "/expose/envvars" ||
+				c.Path() == "/debug/vars" ||
+				c.Path() == "/" ||
+				c.Path() == "/me" ||
+				c.Path() == "/debug/pprof")
+		},
 		Users: map[string]string{
 			"admin": "123456",
 		},
@@ -183,6 +231,105 @@ func main() {
 		// return c.SendString(fmt.Sprintf("%d", 100))
 	})
 
-	fmt.Println(" --- static ---")
+	// app.Use(csrf.New(csrf.Config{
+	// 	CookieSameSite: "None",
+	// 	CookieDomain:   "localhost:4000",
+	// 	CookiePath:     "/",
+	// 	Expiration:     1 * time.Second,
+	// 	ContextKey:     "SERVER_CSRF_TOKEN",
+	// }))
+
+	app.Post("/13", func(c *fiber.Ctx) error {
+		fmt.Println(c.Path())
+		// return c.JSON(struct {
+		// 	A string `json:"a"`
+		// 	B string `json:"bb"`
+		// }{
+		// 	A: "hhhhh",
+		// 	B: "eeeee",
+		// })
+		return c.SendString(fmt.Sprintf("%d", time.Now().UnixNano()))
+	})
+
+	// app.Use(limiter.New(limiter.Config{
+	// Expiration: 60 * time.Second,
+	// })) // prefork 방어안됨
+
+	app.Post("/14", func(c *fiber.Ctx) error {
+		time.Sleep(3 * time.Second)
+		return c.SendString(fmt.Sprintf("%d", time.Now().UnixNano()))
+	})
+
+	app.Use("/expose/envvars", envvar.New())
+	app.Use(expvar.New()) // --> /debug/vars
+
+	// storage := sqlite3.New()
+	app.Use(logger.New(logger.Config{
+		Format: "[${ip}]:${port} ${status} - ${method} ${path}\n",
+	}))
+
+	app.Get("/me", monitor.New(monitor.Config{Title: "MyService Metrics Page"}))
+
+	app.Post("/15", func(c *fiber.Ctx) error {
+		panic("Oh My 15 Error")
+		return c.SendString(fmt.Sprintf("%d", time.Now().UnixNano()))
+	})
+
+	app.Use(requestid.New())
+	app.Use(skip.New(func(c *fiber.Ctx) error {
+		return c.SendString("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+	}, func(ctx *fiber.Ctx) bool {
+		fmt.Println("skip: ", ctx.Method() == fiber.MethodPost)
+		return ctx.Method() == fiber.MethodGet ||
+			ctx.Path() == "/17"
+	}))
+	app.Post("/16", func(c *fiber.Ctx) error {
+		fmt.Printf("%+v\n", c.UserContext())
+		return c.SendString(fmt.Sprintf("%d", time.Now().UnixNano()))
+	})
+
+	app.Post("/17", func(c *fiber.Ctx) error {
+		// return c.SendString(fmt.Sprintf("%d", time.Now().UnixNano()))
+		sleepTime, _ := time.ParseDuration("5000" + "ms")
+		ctx, cancel := context.WithCancel(c.UserContext())
+		go func(cont context.CancelFunc) {
+			time.Sleep(3 * time.Second)
+			cancel()
+		}(cancel)
+		if err := sleepWithContextWithCustomError(ctx, sleepTime); err != nil {
+			return fmt.Errorf("%w: execution error", err)
+		}
+		return c.SendString(fmt.Sprintf("%d", time.Now().UnixNano()))
+	})
+
 	app.Listen(":5000")
+
+}
+
+func sleepWithContextWithCustomError(ctx context.Context, d time.Duration) error {
+	var ErrFooTimeOut = errors.New("foo context canceled")
+	var finish chan bool = make(chan bool)
+	timer := time.NewTimer(d)
+	go func(tmr *time.Timer, fish chan bool) {
+		fmt.Println("확인용")
+		fmt.Println("멈췄다")
+		fmt.Println(<-timer.C)
+		fmt.Println("풀렸다")
+		fish <- true
+	}(timer, finish)
+	select {
+	case <-ctx.Done():
+		log.Println("완료")
+		// log.Println("기달려")
+		// <-timer.C
+		// log.Println("끝")
+		fmt.Println("곧 끝남(에러)")
+		fmt.Println(<-finish)
+		return ErrFooTimeOut
+	case <-timer.C:
+		log.Println("스킵")
+	}
+	fmt.Println("곧 끝남(정상)")
+	fmt.Println(<-finish)
+	return nil
 }

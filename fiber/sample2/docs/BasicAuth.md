@@ -6,6 +6,10 @@ https://www.rfc-editor.org/rfc/rfc7617
 
 https://pkg.go.dev/github.com/gofiber/fiber/v2@v2.42.0/middleware/basicauth#section-readme
 
+https://developer.mozilla.org/ko/docs/Web/HTTP/Headers/Authorization
+
+https://datatracker.ietf.org/doc/html/rfc7235#section-4.2
+
  - 내부 로직
 
 ```go

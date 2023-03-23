@@ -1,8 +1,36 @@
+const baseURL = "http://localhost:5000"
+
 function regClick(id, callback) {
     document.getElementById(id).addEventListener("click", callback)
 }
 
-const baseURL = "http://localhost:5000"
+function getReq(url, headers) {
+    headers = headers ?? {}
+    return [baseURL+url, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+            ...headers
+        },
+    }]
+}
+
+function postReq(url, headers, body) {
+    headers = headers ?? {}
+    body = body ?? {}
+    return [baseURL+url, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+            Authorization: "Basic "+btoa("john:doe"),
+            ...headers,
+        },
+        body: {
+            ...body,
+        }
+    }]
+}
+
 
 regClick("index", ()=> {
     console.log("자바스크립트 정상 동작 확인");
@@ -65,7 +93,7 @@ regClick("6", async()=> {
 
 
 regClick("7", async()=> {
-    const res = await fetch("/7", {
+    const res = await fetch(baseURL+"/7", {
         method: "GET",
         mode:"cors",
     })
@@ -129,7 +157,6 @@ regClick("12", async()=> {
                 mode:"cors",
                 headers: {
                     Authorization: "Basic "+btoa("john:doe"),
-                    // "Cache-Control": "no-cache"
                 },
             }) 
 
@@ -138,26 +165,67 @@ regClick("12", async()=> {
 
 
 regClick("13", async()=> {
-    
+    const res = await fetch(baseURL+"/13", {
+            method: "POST",
+            mode:"cors",
+            headers: {
+                Authorization: "Basic "+btoa("john:doe"),
+                "X-Idempotency-Key": "9acc2f14-8844-4a59-9b11-04d1ce4f8665",
+            },
+        }) 
+
+    console.log(await res.text())   
 })
 
 
 regClick("14", async()=> {
-    
+    const res = await fetch(baseURL+"/14", {
+            method: "POST",
+            mode:"cors",
+            headers: {
+                Authorization: "Basic "+btoa("john:doe"),
+            },
+        }) 
+
+    console.log(await res.text())   
 })
 
 regClick("15", async()=> {
-    
+    const res = await fetch(baseURL+"/15", {
+        method: "POST",
+        mode:"cors",
+        headers: {
+            Authorization: "Basic "+btoa("john:doe"),
+        },
+    }) 
+
+    console.log(await res.text())   
 })
 
 
 regClick("16", async()=> {
-    
+    const res = await fetch(baseURL+"/16", {
+        method: "POST",
+        mode:"cors",
+        headers: {
+            Authorization: "Basic "+btoa("john:doe"),
+        },
+    }) 
+
+    console.log(await res.text())    
 })
 
 
 regClick("17", async()=> {
-    
+    const res = await fetch(baseURL+"/17", {
+        method: "POST",
+        mode:"cors",
+        headers: {
+            Authorization: "Basic "+btoa("john:doe"),
+        },
+    }) 
+
+    console.log(await res.text())   
 })
 
 
