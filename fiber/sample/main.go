@@ -227,6 +227,7 @@ func main() {
 	app.Post("/12", func(c *fiber.Ctx) error {
 		// data, _ := json.MarshalIndent(c.Request(), "", "    ")
 		// c.Response().Header.Add("Cache-Time", "6000")
+		time.Sleep(2 * time.Second)
 		return c.SendString(fmt.Sprintf("%d", time.Now().UnixNano()))
 		// return c.SendString(fmt.Sprintf("%d", 100))
 	})
