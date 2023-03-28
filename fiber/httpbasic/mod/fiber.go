@@ -1,4 +1,4 @@
-package main
+package basic
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/template/html"
 )
 
-func main() {
+func FiberRun() {
 	fmt.Println(runtime.NumCPU())
 	engine := html.New("./public", ".html")
 	app := fiber.New(fiber.Config{
